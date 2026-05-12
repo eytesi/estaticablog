@@ -1,0 +1,33 @@
+backend:
+  name: github
+  repo: TU_USUARIO/TU_REPO   # ← reemplazar con tu repo
+  branch: main
+  base_url: https://estatica-oauth.vercel.app  # ← ver README para setup
+
+media_folder: "images/uploads"
+public_folder: "/images/uploads"
+
+collections:
+  - name: "posts"
+    label: "Entradas"
+    folder: "posts"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Título", name: "title", widget: "string" }
+      - { label: "Fecha", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false }
+      - label: "Categoría"
+        name: "category"
+        widget: "select"
+        options:
+          - { label: "Trabajo", value: "trabajo" }
+          - { label: "Actualidad", value: "actualidad" }
+          - { label: "LGBTQ+", value: "lgbtq" }
+          - { label: "Salud mental", value: "salud" }
+          - { label: "Personal", value: "personal" }
+      - { label: "Tags", name: "tags", widget: "list", default: [] }
+      - { label: "Extracto", name: "excerpt", widget: "text" }
+      - { label: "Tiempo de lectura (minutos)", name: "readTime", widget: "number", default: 5 }
+      - { label: "Entrada destacada", name: "featured", widget: "boolean", default: false }
+      - { label: "Imagen de portada (opcional)", name: "cover", widget: "image", required: false }
+      - { label: "Contenido", name: "body", widget: "markdown" }

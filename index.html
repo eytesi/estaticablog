@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ESTÁTICA — señales que no podés ignorar</title>
+<meta name="description" content="Revista personal sobre trabajo, actualidad, identidad y salud mental.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700;900&family=DM+Serif+Display:ital@0;1&family=Space+Grotesk:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --crema:    #f5f0e8;
+  --negro:    #0e0c0a;
+  --gris:     #6a6560;
+  --borde:    rgba(14,12,10,0.1);
+
+  --trabajo:    #f5df00;
+  --actualidad: #ff2566;
+  --lgbtq:      #3d5aff;
+  --salud:      #00d46a;
+  --personal:   #ff5200;
+}
+
+html { scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
+
+body {
+  background: var(--crema);
+  color: var(--negro);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 400;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* ── GRAIN ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.035;
+  pointer-events: none;
+  z-index: 999;
+}
+
+/* ── PATTERNS ── */
+.pat-lines {
+  background-image: repeating-linear-gradient(-45deg, rgba(0,0,0,0.07) 0, rgba(0,0,0,0.07) 1px, transparent 0, transparent 50%);
+  background-size: 12px 12px;
+}
+.pat-dots {
+  background-image: radial-gradient(circle, rgba(0,0,0,0.15) 1.5px, transparent 1.5px);
+  background-size: 18px 18px;
+}
+.pat-grid {
+  background-image: linear-gradient(rgba(0,0,0,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.08) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+.pat-zigzag {
+  background-image: linear-gradient(135deg, rgba(0,0,0,0.07) 25%, transparent 25%) -10px 0, linear-gradient(225deg, rgba(0,0,0,0.07) 25%, transparent 25%) -10px 0, linear-gradient(315deg, rgba(0,0,0,0.07) 25%, transparent 25%), linear-gradient(45deg, rgba(0,0,0,0.07) 25%, transparent 25%);
+  background-size: 20px 20px;
+}
+.pat-arcs {
+  background-image: radial-gradient(circle at 0 0, transparent 40px, rgba(0,0,0,0.06) 40px, rgba(0,0,0,0.06) 41px, transparent 41px), radial-gradient(circle at 100% 100%, transparent 40px, rgba(0,0,0,0.06) 40px, rgba(0,0,0,0.06) 41px, transparent 41px);
+  background-size: 80px 80px;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 200;
+  padding: 1rem 1.25rem;
+  display: flex; align-items: center; justify-content: space-between;
+  transition: background 0.4s, backdrop-filter 0.4s, box-shadow 0.4s, border-radius 0.4s, top 0.4s, left 0.4s, right 0.4s, padding 0.4s;
+}
+nav.scrolled {
+  background: rgba(245,240,232,0.85);
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  box-shadow: 0 2px 24px rgba(14,12,10,0.08);
+  border-bottom: 1px solid var(--borde);
+}
+@media (max-width: 767px) {
+  nav.scrolled {
+    top: 0.6rem; left: 0.6rem; right: 0.6rem;
+    border-radius: 14px;
+    padding: 0.8rem 1.1rem;
+    border: 1px solid var(--borde);
+  }
+}
+
+.nav-logo {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 18px; font-weight: 900;
+  letter-spacing: -0.02em;
+  color: var(--negro);
+  text-decoration: none;
+  position: relative;
+}
+.nav-logo::before, .nav-logo::after {
+  content: attr(data-text);
+  position: absolute; top: 0; left: 0;
+  opacity: 0;
+}
+.nav-logo::before { color: var(--actualidad); animation: glitch1 4s steps(1) infinite; }
+.nav-logo::after  { color: var(--lgbtq); animation: glitch2 4s steps(1) infinite; }
+
+@keyframes glitch1 {
+  0%,89%,100% { opacity:0; }
+  90% { opacity:1; clip-path:inset(15% 0 55% 0); transform:translateX(-3px); }
+  92% { opacity:1; clip-path:inset(65% 0 10% 0); transform:translateX(3px); }
+  94% { opacity:0; }
+}
+@keyframes glitch2 {
+  0%,91%,100% { opacity:0; }
+  92% { opacity:1; clip-path:inset(30% 0 40% 0); transform:translateX(4px); }
+  94% { opacity:1; clip-path:inset(75% 0 5% 0); transform:translateX(-2px); }
+  96% { opacity:0; }
+}
+
+.nav-right { display:flex; align-items:center; gap:0.6rem; }
+
+.nav-cats {
+  display: none;
+  gap: 0.35rem; list-style: none;
+}
+.nav-cat-pill {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 0.3rem 0.7rem; border-radius: 100px;
+  border: 1.5px solid var(--negro);
+  cursor: pointer; transition: all 0.15s;
+  background: none; font-family: 'Space Grotesk', sans-serif;
+  color: var(--negro);
+}
+.nav-cat-pill:hover, .nav-cat-pill.active {
+  background: var(--negro); color: var(--crema);
+}
+.nav-cat-pill[data-cat="trabajo"].active    { background: var(--trabajo);    color: var(--negro); border-color: var(--trabajo); }
+.nav-cat-pill[data-cat="actualidad"].active { background: var(--actualidad); color: white; border-color: var(--actualidad); }
+.nav-cat-pill[data-cat="lgbtq"].active      { background: var(--lgbtq);      color: white; border-color: var(--lgbtq); }
+.nav-cat-pill[data-cat="salud"].active      { background: var(--salud);      color: var(--negro); border-color: var(--salud); }
+.nav-cat-pill[data-cat="personal"].active   { background: var(--personal);   color: white; border-color: var(--personal); }
+
+.nav-admin {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: rgba(14,12,10,0.4); text-decoration: none;
+  padding: 0.3rem 0.7rem;
+  border: 1.5px solid var(--borde);
+  border-radius: 100px;
+  transition: all 0.15s;
+  display: none;
+}
+.nav-admin:hover { border-color: var(--negro); color: var(--negro); }
+
+.nav-burger {
+  display: flex; flex-direction: column; gap: 4.5px;
+  background: none; border: none; cursor: pointer; padding: 4px;
+}
+.nav-burger span {
+  display: block; width: 22px; height: 1.5px;
+  background: var(--negro); border-radius: 2px;
+  transition: transform 0.3s, opacity 0.3s;
+}
+.nav-burger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.nav-burger.open span:nth-child(2) { opacity: 0; }
+.nav-burger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+/* Mobile menu */
+.mobile-menu {
+  position: fixed; inset: 0; z-index: 190;
+  background: var(--negro);
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: flex-start;
+  padding: 3rem 2.5rem;
+  transform: translateX(100%);
+  transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+  gap: 0.25rem;
+}
+.mobile-menu.open { transform: translateX(0); }
+
+.mobile-menu-logo {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 28px; font-weight: 900;
+  color: var(--crema); margin-bottom: 2.5rem;
+  letter-spacing: -0.02em;
+}
+
+.mobile-cat-btn {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(32px, 9vw, 48px);
+  font-style: italic; font-weight: 400;
+  background: none; border: none;
+  cursor: pointer; text-align: left;
+  padding: 0.3rem 0; color: rgba(245,240,232,0.35);
+  transition: color 0.2s;
+  display: flex; align-items: center; gap: 0.75rem;
+}
+.mobile-cat-btn:active { color: var(--crema); }
+.mobile-cat-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.mobile-menu-bottom {
+  position: absolute; bottom: 2.5rem; left: 2.5rem; right: 2.5rem;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.mobile-menu-sub { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(245,240,232,0.25); }
+.mobile-menu-admin { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(245,240,232,0.35); text-decoration: none; }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100svh;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 0; position: relative; overflow: hidden;
+}
+
+.hero-card {
+  position: relative; overflow: hidden;
+  min-height: 100svh;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  cursor: pointer;
+}
+
+.hero-bg {
+  position: absolute; inset: 0;
+  transition: transform 0.6s ease;
+}
+.hero-card:hover .hero-bg { transform: scale(1.02); }
+
+.hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(14,12,10,0.88) 0%, rgba(14,12,10,0.3) 50%, transparent 80%);
+  z-index: 1;
+}
+
+.hero-content {
+  position: relative; z-index: 2;
+  padding: 2.5rem 1.5rem 2rem;
+}
+
+.hero-cat {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  padding: 0.3rem 0.8rem; border-radius: 100px;
+  margin-bottom: 1.25rem;
+  color: var(--negro);
+}
+
+.hero-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(36px, 9vw, 72px);
+  font-weight: 400; font-style: italic;
+  color: var(--crema); line-height: 1.08;
+  letter-spacing: -0.01em;
+  margin-bottom: 1rem;
+}
+
+.hero-excerpt {
+  font-size: 15px; color: rgba(245,240,232,0.6);
+  line-height: 1.75; max-width: 520px;
+  margin-bottom: 1.5rem;
+}
+
+.hero-meta {
+  display: flex; align-items: center; gap: 1rem;
+  font-size: 12px; color: rgba(245,240,232,0.4);
+  letter-spacing: 0.04em;
+}
+
+.hero-read-btn {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: var(--crema); color: var(--negro);
+  padding: 0.75rem 1.5rem; font-size: 12px; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  text-decoration: none; transition: background 0.15s;
+  border-radius: 2px;
+}
+.hero-read-btn:hover { background: white; }
+
+/* ── MARQUEE ── */
+.marquee-wrap {
+  background: var(--negro); padding: 0.75rem 0;
+  overflow: hidden; white-space: nowrap; border-top: none;
+}
+.marquee-track { display: inline-flex; animation: marquee 18s linear infinite; }
+.marquee-item {
+  display: inline-flex; align-items: center; gap: 1rem;
+  padding: 0 2rem;
+  font-family: 'Unbounded', sans-serif;
+  font-size: 13px; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--crema);
+}
+.marquee-item span { color: var(--actualidad); font-size: 10px; }
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* ── CATEGORY FILTER MOBILE ── */
+.cat-filter {
+  display: flex; gap: 0.5rem;
+  overflow-x: auto; -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 1.25rem 1.25rem 0;
+}
+.cat-filter::-webkit-scrollbar { display: none; }
+.cat-btn {
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 0.45rem 1rem; border-radius: 100px;
+  border: 1.5px solid var(--borde);
+  background: none; cursor: pointer;
+  white-space: nowrap; font-family: 'Space Grotesk', sans-serif;
+  color: var(--negro); transition: all 0.15s;
+  -webkit-appearance: none;
+}
+.cat-btn.active { background: var(--negro); color: var(--crema); border-color: var(--negro); }
+.cat-btn[data-cat="trabajo"].active    { background: var(--trabajo);    color: var(--negro); border-color: var(--trabajo); }
+.cat-btn[data-cat="actualidad"].active { background: var(--actualidad); color: white; border-color: var(--actualidad); }
+.cat-btn[data-cat="lgbtq"].active      { background: var(--lgbtq);      color: white; border-color: var(--lgbtq); }
+.cat-btn[data-cat="salud"].active      { background: var(--salud);      color: var(--negro); border-color: var(--salud); }
+.cat-btn[data-cat="personal"].active   { background: var(--personal);   color: white; border-color: var(--personal); }
+
+/* ── POST GRID ── */
+.grid-section {
+  padding: 1.25rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3px;
+}
+
+/* ── POST CARD ── */
+.post-card {
+  position: relative; overflow: hidden;
+  cursor: pointer; text-decoration: none; color: inherit;
+  display: flex; flex-direction: column;
+  min-height: 260px;
+  transition: transform 0.2s;
+}
+.post-card:active { transform: scale(0.99); }
+
+/* Glitch on hover desktop */
+@media (hover: hover) {
+  .post-card:hover .card-title { animation: titleGlitch 0.4s steps(1) 1; }
+}
+@keyframes titleGlitch {
+  0%,100% { transform: none; }
+  25% { transform: translateX(-2px) skewX(-1deg); clip-path: inset(20% 0 40% 0); }
+  50% { transform: translateX(2px); clip-path: inset(60% 0 10% 0); }
+  75% { transform: none; }
+}
+
+.card-bg {
+  position: absolute; inset: 0;
+  transition: transform 0.4s ease;
+}
+.post-card:hover .card-bg { transform: scale(1.03); }
+
+.card-img-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(14,12,10,0.85) 0%, rgba(14,12,10,0.2) 60%, transparent 100%);
+  z-index: 1;
+}
+
+.card-body {
+  position: relative; z-index: 2;
+  padding: 1.25rem; margin-top: auto;
+}
+
+.card-cat {
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  padding: 0.25rem 0.65rem; border-radius: 100px;
+  margin-bottom: 0.75rem;
+}
+
+/* Dark card text (on light bg cards) */
+.card-dark .card-cat,
+.card-dark .card-title,
+.card-dark .card-excerpt,
+.card-dark .card-meta { color: var(--negro); }
+.card-dark .card-meta { color: rgba(14,12,10,0.5); }
+
+/* Light card text (on dark/color bg cards) */
+.card-light .card-title { color: var(--crema); }
+.card-light .card-excerpt { color: rgba(245,240,232,0.6); }
+.card-light .card-meta { color: rgba(245,240,232,0.4); }
+
+.card-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(20px, 5vw, 28px);
+  font-weight: 400; font-style: italic;
+  line-height: 1.15; margin-bottom: 0.5rem;
+  letter-spacing: -0.01em;
+}
+
+.card-excerpt {
+  font-size: 13px; line-height: 1.7;
+  display: -webkit-box; -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical; overflow: hidden;
+  margin-bottom: 0.75rem; font-weight: 300;
+}
+
+.card-meta {
+  display: flex; align-items: center; gap: 0.75rem;
+  font-size: 11px; font-weight: 500; letter-spacing: 0.04em;
+}
+.card-meta-sep { opacity: 0.3; }
+
+/* Card size variants */
+.card-wide { grid-column: 1 / -1; min-height: 320px; }
+.card-text-only {
+  background: var(--negro) !important;
+  min-height: 180px;
+}
+.card-text-only .card-body { margin-top: 0; display: flex; flex-direction: column; justify-content: center; height: 100%; padding: 2rem 1.5rem; }
+
+/* ── SECTION DIVIDER ── */
+.section-divider {
+  padding: 2.5rem 1.25rem 0;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.divider-label {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 0.28em; text-transform: uppercase;
+  color: rgba(14,12,10,0.35);
+  display: flex; align-items: center; gap: 0.6rem;
+}
+.divider-label::before { content:''; width:20px; height:1px; background:var(--borde); }
+.divider-count {
+  font-family: 'DM Serif Display', serif;
+  font-size: 13px; font-style: italic;
+  color: rgba(14,12,10,0.3);
+}
+
+/* ── FOOTER ── */
+footer {
+  background: var(--negro); padding: 3rem 1.25rem;
+  margin-top: 3px;
+}
+.footer-logo {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 32px; font-weight: 900;
+  color: var(--crema); letter-spacing: -0.02em;
+  margin-bottom: 0.5rem;
+}
+.footer-tagline {
+  font-family: 'DM Serif Display', serif;
+  font-size: 16px; font-style: italic;
+  color: rgba(245,240,232,0.35); margin-bottom: 2rem;
+}
+.footer-cats {
+  display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2rem;
+}
+.footer-cat {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 0.3rem 0.8rem; border-radius: 100px;
+  cursor: pointer; border: none;
+  font-family: 'Space Grotesk', sans-serif;
+  transition: opacity 0.15s;
+}
+.footer-cat:hover { opacity: 0.8; }
+.footer-bottom {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-top: 1.5rem; border-top: 1px solid rgba(245,240,232,0.08);
+  flex-wrap: wrap; gap: 0.75rem;
+}
+.footer-copy { font-size: 11px; color: rgba(245,240,232,0.2); letter-spacing: 0.06em; }
+.footer-admin { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(245,240,232,0.3); text-decoration: none; transition: color 0.15s; }
+.footer-admin:hover { color: var(--crema); }
+
+/* ── EMPTY STATE ── */
+.empty-state {
+  padding: 5rem 1.25rem; text-align: center;
+  display: none;
+}
+.empty-state.visible { display: block; }
+.empty-title { font-family: 'DM Serif Display', serif; font-size: 28px; font-style: italic; margin-bottom: 0.5rem; }
+.empty-sub { font-size: 14px; color: var(--gris); }
+
+/* ── FADE IN ── */
+.fade-in { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+
+/* ── DESKTOP ── */
+@media (min-width: 768px) {
+  nav { padding: 1.25rem 3rem; }
+  .nav-cats { display: flex; }
+  .nav-admin { display: block; }
+  .nav-burger { display: none; }
+  .mobile-menu { display: none; }
+
+  .hero-content { padding: 4rem 3rem 3rem; }
+
+  .cat-filter { display: none; }
+
+  .grid-section {
+    padding: 3px;
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .card-wide { grid-column: span 2; }
+}
+
+@media (min-width: 1200px) {
+  .grid-section { grid-template-columns: repeat(4, 1fr); }
+  .card-wide { grid-column: span 2; }
+}
+</style>
+</head>
+<body>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-logo">ESTÁTICA</div>
+  <button class="mobile-cat-btn" onclick="filterCat('all'); closeMenu()">
+    <span class="mobile-cat-dot" style="background:var(--crema);"></span>
+    Todo
+  </button>
+  <button class="mobile-cat-btn" onclick="filterCat('trabajo'); closeMenu()">
+    <span class="mobile-cat-dot" style="background:var(--trabajo);"></span>
+    Trabajo
+  </button>
+  <button class="mobile-cat-btn" onclick="filterCat('actualidad'); closeMenu()">
+    <span class="mobile-cat-dot" style="background:var(--actualidad);"></span>
+    Actualidad
+  </button>
+  <button class="mobile-cat-btn" onclick="filterCat('lgbtq'); closeMenu()">
+    <span class="mobile-cat-dot" style="background:var(--lgbtq);"></span>
+    LGBTQ+
+  </button>
+  <button class="mobile-cat-btn" onclick="filterCat('salud'); closeMenu()">
+    <span class="mobile-cat-dot" style="background:var(--salud);"></span>
+    Salud mental
+  </button>
+  <button class="mobile-cat-btn" onclick="filterCat('personal'); closeMenu()">
+    <span class="mobile-cat-dot" style="background:var(--personal);"></span>
+    Personal
+  </button>
+  <div class="mobile-menu-bottom">
+    <span class="mobile-menu-sub">estática · 2025</span>
+    <a href="./admin/" class="mobile-menu-admin">Admin →</a>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="/" class="nav-logo" data-text="ESTÁTICA">ESTÁTICA</a>
+  <div class="nav-right">
+    <ul class="nav-cats" id="navCats">
+      <li><button class="nav-cat-pill active" data-cat="all" onclick="filterCat('all')">Todo</button></li>
+      <li><button class="nav-cat-pill" data-cat="trabajo" onclick="filterCat('trabajo')">Trabajo</button></li>
+      <li><button class="nav-cat-pill" data-cat="actualidad" onclick="filterCat('actualidad')">Actualidad</button></li>
+      <li><button class="nav-cat-pill" data-cat="lgbtq" onclick="filterCat('lgbtq')">LGBTQ+</button></li>
+      <li><button class="nav-cat-pill" data-cat="salud" onclick="filterCat('salud')">Salud mental</button></li>
+      <li><button class="nav-cat-pill" data-cat="personal" onclick="filterCat('personal')">Personal</button></li>
+    </ul>
+    <a href="./admin/" class="nav-admin">Admin</a>
+    <button class="nav-burger" id="burgerBtn" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO (rendered by JS) -->
+<section class="hero" id="hero"></section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="marquee-item">ESTÁTICA <span>✦</span></span>
+    <span class="marquee-item">SEÑALES QUE NO PODÉS IGNORAR <span>✦</span></span>
+    <span class="marquee-item">ESTÁTICA <span>✦</span></span>
+    <span class="marquee-item">TRABAJO · ACTUALIDAD · LGBTQ+ · SALUD MENTAL <span>✦</span></span>
+    <span class="marquee-item">ESTÁTICA <span>✦</span></span>
+    <span class="marquee-item">SEÑALES QUE NO PODÉS IGNORAR <span>✦</span></span>
+    <span class="marquee-item">ESTÁTICA <span>✦</span></span>
+    <span class="marquee-item">TRABAJO · ACTUALIDAD · LGBTQ+ · SALUD MENTAL <span>✦</span></span>
+  </div>
+</div>
+
+<!-- MOBILE FILTER -->
+<div class="cat-filter" id="catFilter">
+  <button class="cat-btn active" data-cat="all" onclick="filterCat('all')">Todo</button>
+  <button class="cat-btn" data-cat="trabajo" onclick="filterCat('trabajo')">Trabajo</button>
+  <button class="cat-btn" data-cat="actualidad" onclick="filterCat('actualidad')">Actualidad</button>
+  <button class="cat-btn" data-cat="lgbtq" onclick="filterCat('lgbtq')">LGBTQ+</button>
+  <button class="cat-btn" data-cat="salud" onclick="filterCat('salud')">Salud mental</button>
+  <button class="cat-btn" data-cat="personal" onclick="filterCat('personal')">Personal</button>
+</div>
+
+<!-- GRID DIVIDER -->
+<div class="section-divider fade-in">
+  <div class="divider-label">Todas las entradas</div>
+  <div class="divider-count" id="postCount"></div>
+</div>
+
+<!-- POST GRID (rendered by JS) -->
+<div class="grid-section" id="grid"></div>
+
+<!-- EMPTY STATE -->
+<div class="empty-state" id="emptyState">
+  <div class="empty-title">Sin entradas en esta categoría.</div>
+  <div class="empty-sub">Todavía no hay nada acá — pronto.</div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">ESTÁTICA</div>
+  <div class="footer-tagline">señales que no podés ignorar.</div>
+  <div class="footer-cats">
+    <button class="footer-cat" style="background:var(--trabajo);color:var(--negro);" onclick="filterCat('trabajo')">Trabajo</button>
+    <button class="footer-cat" style="background:var(--actualidad);color:white;" onclick="filterCat('actualidad')">Actualidad</button>
+    <button class="footer-cat" style="background:var(--lgbtq);color:white;" onclick="filterCat('lgbtq')">LGBTQ+</button>
+    <button class="footer-cat" style="background:var(--salud);color:var(--negro);" onclick="filterCat('salud')">Salud mental</button>
+    <button class="footer-cat" style="background:var(--personal);color:white;" onclick="filterCat('personal')">Personal</button>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2025 ESTÁTICA — todos los derechos reservados</span>
+    <a href="./admin/" class="footer-admin">Escribir →</a>
+  </div>
+</footer>
+
+<script>
+// ══════════════════════════
+// POST DATA
+// ══════════════════════════
+const CAT_COLORS = {
+  trabajo:    { color: 'var(--trabajo)',    text: 'var(--negro)', label: 'Trabajo',     pattern: 'pat-lines' },
+  actualidad: { color: 'var(--actualidad)', text: 'white',        label: 'Actualidad',  pattern: 'pat-zigzag' },
+  lgbtq:      { color: 'var(--lgbtq)',      text: 'white',        label: 'LGBTQ+',      pattern: 'pat-grid' },
+  salud:      { color: 'var(--salud)',      text: 'var(--negro)', label: 'Salud mental',pattern: 'pat-dots' },
+  personal:   { color: 'var(--personal)',   text: 'white',        label: 'Personal',    pattern: 'pat-arcs' },
+};
+
+const POSTS = [
+  {
+    slug: 'salud-mental-no-es-lujo',
+    title: 'La salud mental no es un lujo, es un derecho',
+    excerpt: 'Vivimos en una cultura que romantiza el agotamiento y patologiza el descanso. Algunas notas sobre por qué necesitamos hablar de esto diferente.',
+    date: '2025-05-10',
+    category: 'salud',
+    tags: ['terapia', 'burnout', 'bienestar'],
+    readTime: 6,
+    featured: true,
+    content: `<p>Empezamos por el principio: en Argentina, el acceso a terapia es un privilegio. No un derecho garantizado, no algo que "todo el mundo puede hacer si quiere". Un privilegio económico, geográfico, social.</p>
+
+<p>Y sin embargo, el discurso dominante sigue siendo "tenés que ir al psicólogo", como si eso fuera tan simple como ir al kiosco. Hay una brecha enorme entre lo que se recomienda y lo que es materialmente posible para la mayoría.</p>
+
+<h2>El agotamiento como identidad</h2>
+
+<p>Una de las cosas que más me inquieta de la cultura del trabajo contemporánea es cómo convirtió el agotamiento en señal de status. "Estoy muy ocupado" como respuesta de prestigio. "No tengo tiempo" como indicador de importancia.</p>
+
+<p>Cuando el descanso se convierte en algo que hay que justificar, cuando necesitás pedir permiso para no hacer nada, algo está fundamentalmente mal con el sistema. No con vos.</p>
+
+<h2>Qué hacer con todo esto</h2>
+
+<p>No tengo una respuesta cómoda. Sí tengo algunas convicciones:</p>
+
+<ul>
+<li>Tu estado mental no es un problema de productividad. No existís para rendir.</li>
+<li>Pedir ayuda es un acto político, no una debilidad.</li>
+<li>El sistema que te enferma también quiere venderte la cura. Tené cuidado con eso.</li>
+</ul>
+
+<p>Esto es el principio de una conversación más larga. Pero tenía ganas de escribirlo hoy.</p>`,
+  },
+  {
+    slug: 'burnout-que-nadie-nombra',
+    title: 'Trabajar para vivir, o el burnout que nadie quiere nombrar',
+    excerpt: 'El trabajo se convirtió en identidad. Y cuando la identidad se cae, ¿qué queda?',
+    date: '2025-05-03',
+    category: 'trabajo',
+    tags: ['trabajo', 'identidad', 'agotamiento'],
+    readTime: 8,
+    featured: false,
+    content: `<p>Hay una pregunta que me ronda desde hace meses: ¿cuándo fue que empezamos a presentarnos diciendo a qué nos dedicamos antes de decir quiénes somos?</p>
+
+<p>"Soy diseñadora." "Soy abogado." "Soy emprendedor." El trabajo como primera coordenada identitaria. El trabajo como lo que somos, no lo que hacemos para pagar las cuentas.</p>
+
+<h2>El problema del burnout invisible</h2>
+
+<p>El burnout visible es fácil de identificar: no podés levantarte de la cama, llorás en el baño de la oficina, no podés concentrarte. Ese burnout al menos tiene nombre.</p>
+
+<p>El burnout invisible es más traicionero. Es el que aparece cuando "todo está bien". Cuando tenés trabajo, cuando cobrás, cuando por afuera todo parece funcionar. Pero algo adentro se fue vaciando de a poco, tan despacio que ni lo notaste.</p>
+
+<p>Ese burnout no se diagnostica fácil porque nadie te cree cuando decís que estás agotado si "no tenés motivo".</p>
+
+<h2>Lo que el trabajo no puede darte</h2>
+
+<p>Propósito. Comunidad. Amor. Identidad estable. El trabajo puede rozar estas cosas, pero no puede ser la fuente de ninguna de ellas. Cuando lo convertimos en eso, construimos algo muy frágil sobre una base que no aguanta ese peso.</p>
+
+<p>No sé cómo se sale de esto sistemáticamente. Sí sé que el primer paso es nombrarlo.</p>`,
+  },
+  {
+    slug: 'ser-queer-argentina-2025',
+    title: 'Ser queer en Argentina en 2025: avances, retrocesos y lo que nadie dice',
+    excerpt: 'Un repaso honesto sobre dónde estamos parados después de años de lucha y de pérdidas recientes que duelen más de lo que queremos admitir.',
+    date: '2025-04-28',
+    category: 'lgbtq',
+    tags: ['lgbtq+', 'derechos', 'política'],
+    readTime: 10,
+    featured: false,
+    content: `<p>Argentina tiene una historia de activismo LGBTQ+ que es, a la vez, motivo de orgullo y de advertencia. Fuimos pioneros con la ley de matrimonio igualitario en 2010, con la ley de identidad de género en 2012. Construimos algo que parecía sólido.</p>
+
+<p>Y sin embargo, 2024 y 2025 vinieron con retrocesos que no esperábamos. O que esperábamos pero no queríamos ver.</p>
+
+<h2>Lo que tenemos</h2>
+
+<p>Todavía tenemos marcos legales importantes. El problema es que la ley y la práctica son dos cosas distintas. Podés tener el nombre que querés en el DNI y igualmente que te discriminen en una entrevista de trabajo. Podés casarte y igualmente que en tu familia de origen no puedas mencionar a tu pareja.</p>
+
+<p>Los derechos en papel no siempre se traducen en seguridad real.</p>
+
+<h2>Lo que perdemos</h2>
+
+<p>Estamos perdiendo espacios. Físicos, simbólicos, políticos. Hay una ofensiva muy organizada que viene por los avances de las últimas décadas, y está funcionando en algunos frentes.</p>
+
+<p>No escribo esto para el pesimismo. Lo escribo porque nombrar lo que pasa es el primer paso para no normalizarlo.</p>`,
+  },
+  {
+    slug: 'algoritmos-y-lo-que-no-ven',
+    title: 'Los algoritmos y lo que eligen no mostrarte',
+    excerpt: 'Cómo los feeds construyen realidades paralelas y por qué eso importa más de lo que creemos.',
+    date: '2025-04-15',
+    category: 'actualidad',
+    tags: ['medios', 'algoritmos', 'información'],
+    readTime: 7,
+    featured: false,
+    content: `<p>Hay algo perturbador en darse cuenta de que la información que consumís no es neutral. Que hay decisiones —humanas y algorítmicas— detrás de qué aparece en tu feed y qué no.</p>
+
+<p>No es novedad. Pero a veces hay que recordarlo.</p>
+
+<h2>El problema de la cámara de eco</h2>
+
+<p>No es solo que los algoritmos te muestran lo que ya pensás. Es que gradualmente hacen que te sea más difícil imaginar que otros puntos de vista existen y tienen peso real para la gente que los sostiene.</p>
+
+<p>La polarización no viene del desacuerdo. Viene de la incapacidad de reconocer al otro como alguien que razona, aunque llegue a conclusiones distintas.</p>
+
+<p>Eso es lo que los algoritmos optimizados para el engagement están haciendo: no nos dividen, nos dejan de ver.</p>`,
+  },
+  {
+    slug: 'nota-personal-mudanza',
+    title: 'Una nota personal sobre mudarse y lo que dejás atrás',
+    excerpt: 'No todas las entradas van a ser análisis. A veces es solo esto: el movimiento como forma de entender.',
+    date: '2025-04-05',
+    category: 'personal',
+    tags: ['personal', 'cambio', 'mudanza'],
+    readTime: 4,
+    featured: false,
+    content: `<p>Me mudo pronto. A un lugar que no conozco del todo, con una persona que recién estoy conociendo, por razones que tienen más de impulso que de plan.</p>
+
+<p>Y estoy pensando en lo que significa mudarse. No el acto físico —eso es logística, es cajas, es cambio de dirección— sino lo que pasa adentro cuando decidís que el lugar donde estás ya no es el lugar donde querés estar.</p>
+
+<h2>Lo que se queda</h2>
+
+<p>Nada de lo importante se queda en los lugares. Eso lo entendí tarde. Las personas, las memorias, las cosas que aprendiste de vivir en algún sitio: eso viaja con vos.</p>
+
+<p>Lo que se queda es una versión de vos que ya no existe. Y está bien que sea así.</p>
+
+<h2>El miedo como señal</h2>
+
+<p>Tengo miedo. Y al mismo tiempo, la mejor decisión que tomé en los últimos años fue la que más miedo me daba. Voy a intentar seguir confiando en eso.</p>
+
+<p>Esta fue una entrada diferente. Pero ESTÁTICA también es esto.</p>`,
+  },
+];
+
+// ══════════════════════════
+// RENDER HERO
+// ══════════════════════════
+function renderHero() {
+  const post = POSTS.find(p => p.featured) || POSTS[0];
+  const cat = CAT_COLORS[post.category];
+  const hero = document.getElementById('hero');
+  hero.innerHTML = `
+    <a class="hero-card ${cat.pattern}" href="./post.html?slug=${post.slug}" style="background-color:${cat.color};">
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <span class="hero-cat" style="background:${cat.color};color:${cat.text};">${cat.label}</span>
+        <h1 class="hero-title">${post.title}</h1>
+        <p class="hero-excerpt">${post.excerpt}</p>
+        <div class="hero-meta">
+          <span>${formatDate(post.date)}</span>
+          <span class="card-meta-sep">·</span>
+          <span>${post.readTime} min de lectura</span>
+        </div>
+      </div>
+    </a>`;
+}
+
+// ══════════════════════════
+// RENDER GRID
+// ══════════════════════════
+let currentCat = 'all';
+
+function renderGrid(cat = 'all') {
+  const grid = document.getElementById('grid');
+  const empty = document.getElementById('emptyState');
+  const countEl = document.getElementById('postCount');
+
+  const filtered = cat === 'all'
+    ? POSTS.filter(p => !p.featured)
+    : POSTS.filter(p => p.category === cat && !p.featured);
+
+  countEl.textContent = `${filtered.length} entrada${filtered.length !== 1 ? 's' : ''}`;
+
+  if (!filtered.length) {
+    grid.innerHTML = '';
+    empty.classList.add('visible');
+    return;
+  }
+  empty.classList.remove('visible');
+
+  grid.innerHTML = filtered.map((post, i) => {
+    const cat_data = CAT_COLORS[post.category];
+    const isWide = i === 0;
+    const isTextOnly = i === 2;
+
+    if (isTextOnly) {
+      return `
+        <a class="post-card card-text-only card-light fade-in" href="./post.html?slug=${post.slug}">
+          <div class="card-body">
+            <span class="card-cat" style="background:${cat_data.color};color:${cat_data.text};">${cat_data.label}</span>
+            <h2 class="card-title" style="font-size:clamp(24px,5vw,38px);">${post.title}</h2>
+            <p class="card-excerpt">${post.excerpt}</p>
+            <div class="card-meta" style="color:rgba(245,240,232,0.4);">
+              <span>${formatDate(post.date)}</span>
+              <span class="card-meta-sep">·</span>
+              <span>${post.readTime} min</span>
+            </div>
+          </div>
+        </a>`;
+    }
+
+    return `
+      <a class="post-card ${isWide ? 'card-wide' : ''} card-dark ${cat_data.pattern} fade-in"
+         href="./post.html?slug=${post.slug}"
+         style="background-color:${cat_data.color};"
+         style="transition-delay:${i*0.05}s">
+        <div class="card-body">
+          <span class="card-cat" style="background:${cat_data.color};color:${cat_data.text};border:1px solid rgba(0,0,0,0.15);">${cat_data.label}</span>
+          <h2 class="card-title">${post.title}</h2>
+          <p class="card-excerpt">${post.excerpt}</p>
+          <div class="card-meta">
+            <span>${formatDate(post.date)}</span>
+            <span class="card-meta-sep">·</span>
+            <span>${post.readTime} min</span>
+          </div>
+        </div>
+      </a>`;
+  }).join('');
+
+  // Re-observe new cards
+  document.querySelectorAll('.fade-in').forEach(el => fadeObs.observe(el));
+}
+
+// ══════════════════════════
+// FILTER
+// ══════════════════════════
+function filterCat(cat) {
+  currentCat = cat;
+
+  // Update all filter buttons
+  document.querySelectorAll('.nav-cat-pill, .cat-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.cat === cat);
+  });
+
+  // Re-render hero with filtered post or default
+  if (cat !== 'all') {
+    const featuredInCat = POSTS.find(p => p.category === cat);
+    if (featuredInCat) {
+      const hero = document.getElementById('hero');
+      const cat_data = CAT_COLORS[featuredInCat.category];
+      hero.innerHTML = `
+        <a class="hero-card ${cat_data.pattern}" href="./post.html?slug=${featuredInCat.slug}" style="background-color:${cat_data.color};">
+          <div class="hero-overlay"></div>
+          <div class="hero-content">
+            <span class="hero-cat" style="background:${cat_data.color};color:${cat_data.text};">${cat_data.label}</span>
+            <h1 class="hero-title">${featuredInCat.title}</h1>
+            <p class="hero-excerpt">${featuredInCat.excerpt}</p>
+            <div class="hero-meta">
+              <span>${formatDate(featuredInCat.date)}</span>
+              <span class="card-meta-sep">·</span>
+              <span>${featuredInCat.readTime} min de lectura</span>
+            </div>
+          </div>
+        </a>`;
+    }
+  } else {
+    renderHero();
+  }
+
+  renderGrid(cat);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ══════════════════════════
+// UTILS
+// ══════════════════════════
+function formatDate(d) {
+  return new Date(d).toLocaleDateString('es-AR', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+
+// ══════════════════════════
+// NAV SCROLL
+// ══════════════════════════
+const navEl = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  navEl.classList.toggle('scrolled', window.scrollY > 60);
+}, { passive: true });
+
+// ══════════════════════════
+// BURGER
+// ══════════════════════════
+function toggleMenu() {
+  const m = document.getElementById('mobileMenu');
+  const b = document.getElementById('burgerBtn');
+  const open = m.classList.toggle('open');
+  b.classList.toggle('open', open);
+  document.body.style.overflow = open ? 'hidden' : '';
+}
+function closeMenu() {
+  document.getElementById('mobileMenu').classList.remove('open');
+  document.getElementById('burgerBtn').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ══════════════════════════
+// FADE IN
+// ══════════════════════════
+const fadeObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); fadeObs.unobserve(e.target); }
+  });
+}, { threshold: 0.08 });
+
+// ══════════════════════════
+// INIT
+// ══════════════════════════
+renderHero();
+renderGrid();
+document.querySelectorAll('.fade-in').forEach(el => fadeObs.observe(el));
+</script>
+</body>
+</html>
