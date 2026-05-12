@@ -1,8 +1,6 @@
 backend:
-  name: github
-  repo: TU_USUARIO/TU_REPO   # ← reemplazar con tu repo
+  name: git-gateway
   branch: main
-  base_url: https://estatica-oauth.vercel.app  # ← ver README para setup
 
 media_folder: "images/uploads"
 public_folder: "/images/uploads"
