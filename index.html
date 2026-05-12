@@ -4,7 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ESTÁTICA — señales que no podés ignorar</title>
-<meta name="description" content="Revista personal sobre trabajo, actualidad, identidad y salud mental.">
+<meta name="description" content="Revista personal sobre trabajo, actualidad, identidad LGBTQ+ y salud mental. Señales que no podés ignorar.">
+<meta property="og:title" content="ESTÁTICA — señales que no podés ignorar">
+<meta property="og:description" content="Revista personal sobre trabajo, actualidad, identidad LGBTQ+ y salud mental.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="/images/og-image.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ESTÁTICA">
+<meta name="twitter:description" content="Señales que no podés ignorar.">
+<link rel="icon" type="image/svg+xml" href="./favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700;900&family=DM+Serif+Display:ital@0;1&family=Space+Grotesk:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;1,400;1,500&display=swap" rel="stylesheet">
 <style>
@@ -510,10 +518,199 @@ footer {
   .grid-section { grid-template-columns: repeat(4, 1fr); }
   .card-wide { grid-column: span 2; }
 }
+
+/* SEARCH OVERLAY */
+.search-overlay {
+  position: fixed; inset: 0; z-index: 500;
+  background: rgba(14,12,10,0.96);
+  backdrop-filter: blur(12px);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: flex-start;
+  padding: 6rem 1.5rem 2rem;
+  opacity: 0; visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
+}
+.search-overlay.open { opacity: 1; visibility: visible; }
+
+.search-bar {
+  width: 100%; max-width: 640px;
+  display: flex; align-items: center;
+  border-bottom: 2px solid rgba(245,240,232,0.2);
+  margin-bottom: 2.5rem;
+  gap: 1rem;
+  transition: border-color 0.2s;
+}
+.search-bar:focus-within { border-color: var(--actualidad); }
+
+.search-icon { font-size: 20px; color: rgba(245,240,232,0.4); flex-shrink: 0; }
+
+.search-input {
+  flex: 1; background: none; border: none; outline: none;
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(24px, 6vw, 40px);
+  font-style: italic; font-weight: 400;
+  color: var(--crema); padding: 0.75rem 0;
+  caret-color: var(--actualidad);
+}
+.search-input::placeholder { color: rgba(245,240,232,0.2); }
+
+.search-close {
+  background: none; border: none; cursor: pointer;
+  color: rgba(245,240,232,0.4); font-size: 22px;
+  padding: 4px; transition: color 0.15s; flex-shrink: 0;
+}
+.search-close:hover { color: var(--crema); }
+
+.search-results {
+  width: 100%; max-width: 640px;
+  display: flex; flex-direction: column; gap: 2px;
+  overflow-y: auto; max-height: calc(100vh - 220px);
+}
+
+.search-result {
+  display: flex; flex-direction: column; gap: 0.3rem;
+  padding: 1.1rem 0; border-bottom: 1px solid rgba(245,240,232,0.07);
+  text-decoration: none; color: inherit;
+  transition: padding-left 0.2s;
+}
+.search-result:hover { padding-left: 0.5rem; }
+.search-result:last-child { border-bottom: none; }
+
+.sr-cat {
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  padding: 0.2rem 0.6rem; border-radius: 100px;
+  display: inline-flex; width: fit-content;
+}
+.sr-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(18px, 4vw, 22px);
+  font-style: italic; font-weight: 400;
+  color: var(--crema); line-height: 1.2;
+}
+.sr-excerpt { font-size: 13px; color: rgba(245,240,232,0.4); line-height: 1.6; }
+.sr-meta { font-size: 11px; color: rgba(245,240,232,0.25); letter-spacing: 0.04em; }
+
+.search-empty {
+  font-family: 'DM Serif Display', serif;
+  font-size: 18px; font-style: italic;
+  color: rgba(245,240,232,0.25); text-align: center;
+  padding-top: 2rem;
+}
+.search-hint {
+  font-size: 11px; font-weight: 500; letter-spacing: 0.18em;
+  text-transform: uppercase; color: rgba(245,240,232,0.2);
+  text-align: center; padding-top: 3rem;
+}
+
+/* SEARCH BUTTON in nav */
+.nav-search-btn {
+  background: none; border: none; cursor: pointer;
+  color: var(--negro); font-size: 16px; padding: 4px;
+  display: flex; align-items: center; gap: 0.4rem;
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  font-family: 'Space Grotesk', sans-serif;
+  border: 1.5px solid var(--borde);
+  padding: 0.3rem 0.7rem; border-radius: 100px;
+  transition: all 0.15s;
+}
+.nav-search-btn:hover { background: var(--negro); color: var(--crema); border-color: var(--negro); }
+
+/* NEWSLETTER */
+.newsletter-section {
+  background: var(--negro);
+  padding: 5rem 1.5rem;
+  position: relative; overflow: hidden;
+}
+.newsletter-section::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: radial-gradient(circle, rgba(255,37,102,0.06) 1.5px, transparent 1.5px);
+  background-size: 22px 22px;
+  pointer-events: none;
+}
+.newsletter-glow {
+  position: absolute;
+  width: 50vw; height: 50vw; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,37,102,0.08) 0%, transparent 70%);
+  top: -15vw; right: -10vw; pointer-events: none;
+}
+.newsletter-content { position: relative; z-index: 2; max-width: 560px; }
+.newsletter-eyebrow {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 0.32em; text-transform: uppercase;
+  color: var(--actualidad); margin-bottom: 1rem;
+  display: flex; align-items: center; gap: 0.6rem;
+}
+.newsletter-eyebrow::before { content:''; width:18px; height:1px; background:var(--actualidad); }
+.newsletter-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(30px, 7vw, 52px);
+  font-weight: 400; font-style: italic;
+  color: var(--crema); line-height: 1.05;
+  letter-spacing: -0.01em; margin-bottom: 0.75rem;
+}
+.newsletter-sub {
+  font-size: 15px; color: rgba(245,240,232,0.4);
+  line-height: 1.8; margin-bottom: 2rem;
+}
+.newsletter-form {
+  display: flex; flex-direction: column; gap: 0.75rem;
+}
+.newsletter-input-row {
+  display: flex; gap: 0.5rem; flex-wrap: wrap;
+}
+.newsletter-input {
+  flex: 1; min-width: 220px;
+  background: rgba(245,240,232,0.06);
+  border: 1.5px solid rgba(245,240,232,0.12);
+  color: var(--crema);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 14px; padding: 0.85rem 1.1rem;
+  outline: none; border-radius: 4px;
+  transition: border-color 0.2s;
+}
+.newsletter-input:focus { border-color: var(--actualidad); }
+.newsletter-input::placeholder { color: rgba(245,240,232,0.25); }
+.newsletter-btn {
+  background: var(--actualidad); color: white;
+  border: none; cursor: pointer;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12px; font-weight: 700;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  padding: 0.85rem 1.75rem; border-radius: 4px;
+  transition: filter 0.15s, box-shadow 0.15s;
+  white-space: nowrap;
+}
+.newsletter-btn:hover { filter: brightness(1.1); box-shadow: 0 4px 20px rgba(255,37,102,0.3); }
+.newsletter-ok {
+  font-family: 'DM Serif Display', serif;
+  font-size: 16px; font-style: italic;
+  color: var(--salud); display: none;
+}
+.newsletter-privacy {
+  font-size: 11px; color: rgba(245,240,232,0.2);
+  letter-spacing: 0.04em; line-height: 1.6;
+}
+
 </style>
 <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 <body>
+
+
+<!-- SEARCH OVERLAY -->
+<div class="search-overlay" id="searchOverlay">
+  <div class="search-bar">
+    <span class="search-icon">🔍</span>
+    <input class="search-input" id="searchInput" type="text" placeholder="Buscar señales..." autocomplete="off">
+    <button class="search-close" onclick="closeSearch()" aria-label="Cerrar">✕</button>
+  </div>
+  <div class="search-results" id="searchResults">
+    <div class="search-hint">Escribí algo para buscar en todas las entradas</div>
+  </div>
+</div>
 
 <!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu">
@@ -561,6 +758,8 @@ footer {
       <li><button class="nav-cat-pill" data-cat="personal" onclick="filterCat('personal')">Personal</button></li>
     </ul>
     <a href="./admin/" class="nav-admin">Admin</a>
+    <a href="./sobre.html" class="nav-admin">Sobre mí</a>
+    <button class="nav-search-btn" onclick="openSearch()" aria-label="Buscar">🔍 Buscar</button>
     <button class="nav-burger" id="burgerBtn" onclick="toggleMenu()">
       <span></span><span></span><span></span>
     </button>
@@ -609,16 +808,36 @@ footer {
   <div class="empty-sub">Todavía no hay nada acá — pronto.</div>
 </div>
 
+
+<!-- NEWSLETTER -->
+<section class="newsletter-section">
+  <div class="newsletter-glow"></div>
+  <div class="newsletter-content">
+    <div class="newsletter-eyebrow">No te pierdas ninguna señal</div>
+    <div class="newsletter-title">El blog, directo<br>en tu casilla.</div>
+    <p class="newsletter-sub">Cada entrada nueva, sin algoritmos de por medio. Sin spam, sin periodicidad forzada — solo cuando hay algo que vale la pena decir.</p>
+    <form class="newsletter-form" name="newsletter" method="POST" data-netlify="true" onsubmit="handleNewsletter(event)">
+      <input type="hidden" name="form-name" value="newsletter">
+      <div class="newsletter-input-row">
+        <input class="newsletter-input" type="email" name="email" placeholder="tu@email.com" required>
+        <button class="newsletter-btn" type="submit">Suscribirme →</button>
+      </div>
+      <div class="newsletter-ok" id="newsletterOk">✦ ¡Listo! Te aviso cuando haya algo nuevo.</div>
+      <p class="newsletter-privacy">Sin spam. Podés darte de baja cuando quieras.</p>
+    </form>
+  </div>
+</section>
+
 <!-- FOOTER -->
 <footer>
   <div class="footer-logo">ESTÁTICA</div>
   <div class="footer-tagline">señales que no podés ignorar.</div>
   <div class="footer-cats">
-    <button class="footer-cat" style="background:var(--trabajo);color:var(--negro);" onclick="filterCat('trabajo')">Trabajo</button>
-    <button class="footer-cat" style="background:var(--actualidad);color:white;" onclick="filterCat('actualidad')">Actualidad</button>
-    <button class="footer-cat" style="background:var(--lgbtq);color:white;" onclick="filterCat('lgbtq')">LGBTQ+</button>
-    <button class="footer-cat" style="background:var(--salud);color:var(--negro);" onclick="filterCat('salud')">Salud mental</button>
-    <button class="footer-cat" style="background:var(--personal);color:white;" onclick="filterCat('personal')">Personal</button>
+    <a href="./categoria.html?cat=trabajo" class="footer-cat" style="background:var(--trabajo);color:var(--negro);text-decoration:none;">Trabajo</a>
+    <a href="./categoria.html?cat=actualidad" class="footer-cat" style="background:var(--actualidad);color:white;text-decoration:none;">Actualidad</a>
+    <a href="./categoria.html?cat=lgbtq" class="footer-cat" style="background:var(--lgbtq);color:white;text-decoration:none;">LGBTQ+</a>
+    <a href="./categoria.html?cat=salud" class="footer-cat" style="background:var(--salud);color:var(--negro);text-decoration:none;">Salud mental</a>
+    <a href="./categoria.html?cat=personal" class="footer-cat" style="background:var(--personal);color:white;text-decoration:none;">Personal</a>
   </div>
   <div class="footer-bottom">
     <span class="footer-copy">© 2025 ESTÁTICA — todos los derechos reservados</span>

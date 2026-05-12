@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ESTÁTICA</title>
+<meta name="description" content="">
+<link rel="icon" type="image/svg+xml" href="./favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700;900&family=DM+Serif+Display:ital@0;1&family=Space+Grotesk:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --crema: #f5f0e8;
+  --negro: #0e0c0a;
+  --gris:  #6a6560;
+  --borde: rgba(14,12,10,0.1);
+  --trabajo:    #f5df00;
+  --actualidad: #ff2566;
+  --lgbtq:      #3d5aff;
+  --salud:      #00d46a;
+  --personal:   #ff5200;
+}
+html { scroll-behavior: smooth; }
+body { background: var(--crema); color: var(--negro); font-family: 'Space Grotesk', sans-serif; overflow-x: hidden; }
+body::before {
+  content: ''; position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.035; pointer-events: none; z-index: 999;
+}
+
+/* PATTERNS */
+.pat-lines { background-image: repeating-linear-gradient(-45deg, rgba(0,0,0,0.07) 0, rgba(0,0,0,0.07) 1px, transparent 0, transparent 50%); background-size: 12px 12px; }
+.pat-dots  { background-image: radial-gradient(circle, rgba(0,0,0,0.15) 1.5px, transparent 1.5px); background-size: 18px 18px; }
+.pat-grid  { background-image: linear-gradient(rgba(0,0,0,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.08) 1px, transparent 1px); background-size: 22px 22px; }
+.pat-zigzag { background-image: linear-gradient(135deg, rgba(0,0,0,0.07) 25%, transparent 25%) -10px 0, linear-gradient(225deg, rgba(0,0,0,0.07) 25%, transparent 25%) -10px 0, linear-gradient(315deg, rgba(0,0,0,0.07) 25%, transparent 25%), linear-gradient(45deg, rgba(0,0,0,0.07) 25%, transparent 25%); background-size: 20px 20px; }
+.pat-arcs  { background-image: radial-gradient(circle at 0 0, transparent 40px, rgba(0,0,0,0.06) 40px, rgba(0,0,0,0.06) 41px, transparent 41px), radial-gradient(circle at 100% 100%, transparent 40px, rgba(0,0,0,0.06) 40px, rgba(0,0,0,0.06) 41px, transparent 41px); background-size: 80px 80px; }
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  padding: 1rem 1.25rem;
+  display: flex; align-items: center; justify-content: space-between;
+  transition: background 0.4s, backdrop-filter 0.4s, box-shadow 0.4s, border-radius 0.4s, top 0.4s, left 0.4s, right 0.4s, padding 0.4s;
+}
+nav.scrolled { background: rgba(245,240,232,0.88); backdrop-filter: blur(20px) saturate(1.4); -webkit-backdrop-filter: blur(20px) saturate(1.4); box-shadow: 0 2px 24px rgba(14,12,10,0.08); border-bottom: 1px solid var(--borde); }
+@media (max-width:767px) { nav.scrolled { top:.6rem; left:.6rem; right:.6rem; border-radius:14px; padding:.8rem 1.1rem; border:1px solid var(--borde); } }
+.nav-logo { font-family:'Unbounded',sans-serif; font-size:18px; font-weight:900; letter-spacing:-0.02em; color:var(--negro); text-decoration:none; }
+.nav-logo::before, .nav-logo::after { content:attr(data-text); position:absolute; top:0; left:0; opacity:0; }
+.nav-logo::before { color:var(--actualidad); animation:glitch1 4s steps(1) infinite; }
+.nav-logo::after  { color:var(--lgbtq); animation:glitch2 4s steps(1) infinite; }
+.nav-logo { position:relative; }
+@keyframes glitch1 { 0%,89%,100%{opacity:0;} 90%{opacity:1;clip-path:inset(15% 0 55% 0);transform:translateX(-3px);} 92%{opacity:1;clip-path:inset(65% 0 10% 0);transform:translateX(3px);} 94%{opacity:0;} }
+@keyframes glitch2 { 0%,91%,100%{opacity:0;} 92%{opacity:1;clip-path:inset(30% 0 40% 0);transform:translateX(4px);} 94%{opacity:1;clip-path:inset(75% 0 5% 0);transform:translateX(-2px);} 96%{opacity:0;} }
+.nav-right { display:flex; align-items:center; gap:0.6rem; }
+.nav-back { font-size:11px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:var(--gris); text-decoration:none; display:flex; align-items:center; gap:0.4rem; transition:color 0.15s; }
+.nav-back:hover { color:var(--negro); }
+
+/* HERO */
+.cat-hero {
+  min-height: 70svh;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 0; position: relative; overflow: hidden;
+}
+.cat-hero-bg { position:absolute; inset:0; transition:transform 0.6s; }
+.cat-hero-overlay {
+  position:absolute; inset:0;
+  background: linear-gradient(to top, rgba(14,12,10,0.7) 0%, rgba(14,12,10,0.2) 50%, rgba(14,12,10,0.05) 100%);
+  z-index:1;
+}
+.cat-hero-content {
+  position:relative; z-index:2;
+  padding: 5rem 1.5rem 3rem;
+}
+.cat-hero-label {
+  font-size:10px; font-weight:700;
+  letter-spacing:0.32em; text-transform:uppercase;
+  color:rgba(245,240,232,0.6); margin-bottom:1rem;
+  display:flex; align-items:center; gap:0.6rem;
+}
+.cat-hero-label::before { content:''; width:18px; height:1px; background:rgba(245,240,232,0.5); }
+.cat-hero-name {
+  font-family:'DM Serif Display',serif;
+  font-size:clamp(56px,16vw,120px);
+  font-weight:400; font-style:italic;
+  color:var(--crema); line-height:0.9;
+  letter-spacing:-0.02em; margin-bottom:1rem;
+}
+.cat-hero-count {
+  font-size:14px; color:rgba(245,240,232,0.5);
+  letter-spacing:0.06em;
+}
+
+/* GRID */
+.grid-section {
+  padding: 3px;
+  display: grid; grid-template-columns: 1fr; gap: 3px;
+}
+.post-card {
+  position:relative; overflow:hidden; cursor:pointer;
+  text-decoration:none; color:inherit;
+  display:flex; flex-direction:column;
+  min-height:260px; transition:transform 0.2s;
+}
+.post-card:active { transform:scale(0.99); }
+@media (hover:hover) { .post-card:hover .card-title { animation:titleGlitch 0.4s steps(1) 1; } }
+@keyframes titleGlitch { 0%,100%{transform:none;} 25%{transform:translateX(-2px) skewX(-1deg);clip-path:inset(20% 0 40% 0);} 50%{transform:translateX(2px);clip-path:inset(60% 0 10% 0);} 75%{transform:none;} }
+.card-bg { position:absolute; inset:0; transition:transform 0.4s; }
+.post-card:hover .card-bg { transform:scale(1.03); }
+.card-body { position:relative; z-index:2; padding:1.25rem; margin-top:auto; }
+.card-cat { display:inline-flex; align-items:center; font-size:9px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; padding:.25rem .65rem; border-radius:100px; margin-bottom:.75rem; }
+.card-dark .card-title, .card-dark .card-excerpt, .card-dark .card-meta { color:var(--negro); }
+.card-dark .card-meta { color:rgba(14,12,10,0.5); }
+.card-title { font-family:'DM Serif Display',serif; font-size:clamp(20px,5vw,28px); font-weight:400; font-style:italic; line-height:1.15; margin-bottom:.5rem; letter-spacing:-0.01em; }
+.card-excerpt { font-size:13px; line-height:1.7; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; margin-bottom:.75rem; font-weight:300; }
+.card-meta { display:flex; align-items:center; gap:.75rem; font-size:11px; font-weight:500; letter-spacing:.04em; }
+.card-meta-sep { opacity:.3; }
+.card-wide { grid-column: 1 / -1; min-height:320px; }
+.card-text-only { background:var(--negro) !important; min-height:180px; }
+.card-text-only .card-body { margin-top:0; display:flex; flex-direction:column; justify-content:center; height:100%; padding:2rem 1.5rem; }
+
+/* EMPTY */
+.empty-state { padding:5rem 1.5rem; text-align:center; }
+.empty-title { font-family:'DM Serif Display',serif; font-size:28px; font-style:italic; margin-bottom:.5rem; }
+.empty-sub { font-size:14px; color:var(--gris); }
+
+/* DIVIDER */
+.section-divider { padding:2.5rem 1.5rem 0; display:flex; align-items:center; justify-content:space-between; }
+.divider-label { font-size:10px; font-weight:700; letter-spacing:0.28em; text-transform:uppercase; color:rgba(14,12,10,0.35); display:flex; align-items:center; gap:.6rem; }
+.divider-label::before { content:''; width:20px; height:1px; background:var(--borde); }
+.divider-count { font-family:'DM Serif Display',serif; font-size:13px; font-style:italic; color:rgba(14,12,10,0.3); }
+
+/* OTHER CATS */
+.other-cats { padding:3rem 1.5rem 0; }
+.other-cats-label { font-size:10px; font-weight:700; letter-spacing:0.28em; text-transform:uppercase; color:rgba(14,12,10,0.35); margin-bottom:1rem; }
+.other-cats-grid { display:flex; flex-wrap:wrap; gap:.5rem; }
+.other-cat-link { font-size:11px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; padding:.45rem 1rem; border-radius:100px; border:1.5px solid var(--borde); color:var(--negro); text-decoration:none; transition:all 0.15s; display:flex; align-items:center; gap:.4rem; }
+.other-cat-link:hover { background:var(--negro); color:var(--crema); border-color:var(--negro); }
+.other-cat-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+
+/* FOOTER */
+footer { background:var(--negro); padding:2.5rem 1.5rem; margin-top:3rem; }
+.footer-logo { font-family:'Unbounded',sans-serif; font-size:24px; font-weight:900; color:var(--crema); letter-spacing:-0.02em; text-decoration:none; display:block; margin-bottom:.5rem; }
+.footer-copy { font-size:11px; color:rgba(245,240,232,0.2); letter-spacing:.06em; }
+
+.fade-in { opacity:0; transform:translateY(16px); transition:opacity 0.5s ease, transform 0.5s ease; }
+.fade-in.visible { opacity:1; transform:translateY(0); }
+
+@media (min-width:768px) {
+  nav { padding:1.25rem 3rem; }
+  .cat-hero-content { padding:7rem 4rem 4rem; }
+  .grid-section { grid-template-columns:repeat(3,1fr); }
+  .card-wide { grid-column:span 2; }
+  .other-cats { padding:3rem 3rem 0; }
+  footer { padding:2.5rem 4rem; }
+}
+@media (min-width:1200px) {
+  .grid-section { grid-template-columns:repeat(4,1fr); }
+}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="./index.html" class="nav-logo" data-text="ESTÁTICA">ESTÁTICA</a>
+  <a href="./index.html" class="nav-back">← Todo</a>
+</nav>
+
+<section class="cat-hero" id="catHero"></section>
+
+<div class="section-divider fade-in">
+  <div class="divider-label" id="divLabel">Entradas</div>
+  <div class="divider-count" id="postCount"></div>
+</div>
+
+<div class="grid-section fade-in" id="grid"></div>
+<div id="emptyState" style="display:none;" class="empty-state">
+  <div class="empty-title">Nada acá todavía.</div>
+  <div class="empty-sub">Pronto habrá más señales en esta frecuencia.</div>
+</div>
+
+<div class="other-cats fade-in" id="otherCats"></div>
+
+<footer>
+  <a href="./index.html" class="footer-logo">ESTÁTICA</a>
+  <div class="footer-copy">© 2025 ESTÁTICA — todos los derechos reservados</div>
+</footer>
+
+<script>
+const CAT_COLORS = {
+  trabajo:    { color:'var(--trabajo)',    hex:'#f5df00', text:'var(--negro)', label:'Trabajo',      pattern:'pat-lines' },
+  actualidad: { color:'var(--actualidad)', hex:'#ff2566', text:'white',        label:'Actualidad',   pattern:'pat-zigzag' },
+  lgbtq:      { color:'var(--lgbtq)',      hex:'#3d5aff', text:'white',        label:'LGBTQ+',       pattern:'pat-grid' },
+  salud:      { color:'var(--salud)',      hex:'#00d46a', text:'var(--negro)', label:'Salud mental', pattern:'pat-dots' },
+  personal:   { color:'var(--personal)',   hex:'#ff5200', text:'white',        label:'Personal',     pattern:'pat-arcs' },
+};
+
+const POSTS = [
+  { slug:'salud-mental-no-es-lujo',  title:'La salud mental no es un lujo, es un derecho', excerpt:'Vivimos en una cultura que romantiza el agotamiento y patologiza el descanso.', date:'2025-05-10', category:'salud',      tags:['terapia','burnout'], readTime:6 },
+  { slug:'burnout-que-nadie-nombra', title:'Trabajar para vivir, o el burnout que nadie quiere nombrar', excerpt:'El trabajo se convirtió en identidad. Y cuando la identidad se cae, ¿qué queda?', date:'2025-05-03', category:'trabajo',    tags:['trabajo','identidad'], readTime:8 },
+  { slug:'ser-queer-argentina-2025', title:'Ser queer en Argentina en 2025: avances, retrocesos y lo que nadie dice', excerpt:'Un repaso honesto sobre dónde estamos parados.', date:'2025-04-28', category:'lgbtq',      tags:['lgbtq+','derechos'], readTime:10 },
+  { slug:'algoritmos-y-lo-que-no-ven', title:'Los algoritmos y lo que eligen no mostrarte', excerpt:'Cómo los feeds construyen realidades paralelas.', date:'2025-04-15', category:'actualidad', tags:['medios','algoritmos'], readTime:7 },
+  { slug:'nota-personal-mudanza',    title:'Una nota personal sobre mudarse y lo que dejás atrás', excerpt:'No todas las entradas van a ser análisis. A veces es solo esto.', date:'2025-04-05', category:'personal',   tags:['personal','cambio'], readTime:4 },
+];
+
+function formatDate(d) {
+  return new Date(d).toLocaleDateString('es-AR', { day:'numeric', month:'long', year:'numeric' });
+}
+
+const params = new URLSearchParams(window.location.search);
+const cat = params.get('cat');
+const catData = CAT_COLORS[cat];
+
+if (!catData) {
+  window.location.href = './index.html';
+}
+
+// Meta
+document.title = `${catData.label} — ESTÁTICA`;
+document.querySelector('meta[name="description"]').setAttribute('content', `Entradas de ${catData.label} en ESTÁTICA.`);
+
+// Hero
+document.getElementById('catHero').innerHTML = `
+  <div class="cat-hero-bg ${catData.pattern}" style="background-color:${catData.color};"></div>
+  <div class="cat-hero-overlay"></div>
+  <div class="cat-hero-content">
+    <div class="cat-hero-label">Categoría</div>
+    <div class="cat-hero-name">${catData.label}</div>
+  </div>`;
+
+// Grid
+const posts = POSTS.filter(p => p.category === cat);
+const countEl = document.getElementById('postCount');
+const grid = document.getElementById('grid');
+const empty = document.getElementById('emptyState');
+document.getElementById('divLabel').textContent = `Entradas en ${catData.label}`;
+countEl.textContent = `${posts.length} entrada${posts.length !== 1 ? 's' : ''}`;
+
+if (!posts.length) {
+  grid.style.display = 'none';
+  empty.style.display = 'block';
+} else {
+  grid.innerHTML = posts.map((post, i) => {
+    const isWide = i === 0;
+    const isTextOnly = i === 2;
+    if (isTextOnly) {
+      return `<a class="post-card card-text-only fade-in" href="./post.html?slug=${post.slug}">
+        <div class="card-body">
+          <span class="card-cat" style="background:${catData.color};color:${catData.text};">${catData.label}</span>
+          <h2 class="card-title" style="color:var(--crema);font-size:clamp(24px,5vw,38px);">${post.title}</h2>
+          <p class="card-excerpt" style="color:rgba(245,240,232,0.5);">${post.excerpt}</p>
+          <div class="card-meta" style="color:rgba(245,240,232,0.4);">
+            <span>${formatDate(post.date)}</span><span class="card-meta-sep">·</span><span>${post.readTime} min</span>
+          </div>
+        </div></a>`;
+    }
+    return `<a class="post-card ${isWide?'card-wide':''} card-dark ${catData.pattern} fade-in" href="./post.html?slug=${post.slug}" style="background-color:${catData.color};">
+      <div class="card-body">
+        <span class="card-cat" style="background:${catData.color};color:${catData.text};border:1px solid rgba(0,0,0,0.12);">${catData.label}</span>
+        <h2 class="card-title">${post.title}</h2>
+        <p class="card-excerpt">${post.excerpt}</p>
+        <div class="card-meta">
+          <span>${formatDate(post.date)}</span><span class="card-meta-sep">·</span><span>${post.readTime} min</span>
+        </div>
+      </div></a>`;
+  }).join('');
+}
+
+// Other categories
+const others = Object.entries(CAT_COLORS).filter(([k]) => k !== cat);
+document.getElementById('otherCats').innerHTML = `
+  <div class="other-cats-label">Otras frecuencias</div>
+  <div class="other-cats-grid">
+    ${others.map(([k,v]) => `
+      <a href="./categoria.html?cat=${k}" class="other-cat-link">
+        <span class="other-cat-dot" style="background:${v.color};"></span>
+        ${v.label}
+      </a>`).join('')}
+  </div>`;
+
+// Nav scroll
+const navEl = document.getElementById('nav');
+window.addEventListener('scroll', () => navEl.classList.toggle('scrolled', window.scrollY > 60), { passive:true });
+
+// Fade in
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+}, { threshold:0.08 });
+document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

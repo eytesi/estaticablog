@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ESTÁTICA</title>
+<meta name="description" content="">
+<meta property="og:title" content="">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:image" content="">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="./favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700;900&family=DM+Serif+Display:ital@0;1&family=Space+Grotesk:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
 <style>
@@ -210,6 +217,54 @@ nav.scrolled {
 }
 .back-link:hover { gap: 0.75rem; }
 
+/* RELATED POSTS */
+.related-section {
+  background: var(--negro);
+  padding: 3rem 1.5rem 4rem;
+  margin-top: 3px;
+}
+.related-label {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 0.32em; text-transform: uppercase;
+  color: rgba(245,240,232,0.3); margin-bottom: 1.75rem;
+  display: flex; align-items: center; gap: 0.6rem;
+}
+.related-label::before { content:''; width:18px; height:1px; background:rgba(245,240,232,0.2); }
+.related-grid {
+  display: grid; grid-template-columns: 1fr; gap: 3px;
+}
+.related-card {
+  text-decoration: none; color: inherit;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  position: relative; overflow: hidden;
+  min-height: 160px; padding: 1.5rem;
+  transition: opacity 0.2s;
+}
+.related-card:hover { opacity: 0.88; }
+.related-pat-lines { background-image: repeating-linear-gradient(-45deg, rgba(0,0,0,0.07) 0, rgba(0,0,0,0.07) 1px, transparent 0, transparent 50%); background-size: 12px 12px; }
+.related-pat-dots  { background-image: radial-gradient(circle, rgba(0,0,0,0.15) 1.5px, transparent 1.5px); background-size: 18px 18px; }
+.related-pat-grid  { background-image: linear-gradient(rgba(0,0,0,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.08) 1px, transparent 1px); background-size: 22px 22px; }
+.related-pat-zigzag { background-image: linear-gradient(135deg, rgba(0,0,0,0.07) 25%, transparent 25%) -10px 0, linear-gradient(225deg, rgba(0,0,0,0.07) 25%, transparent 25%) -10px 0, linear-gradient(315deg, rgba(0,0,0,0.07) 25%, transparent 25%), linear-gradient(45deg, rgba(0,0,0,0.07) 25%, transparent 25%); background-size: 20px 20px; }
+.related-pat-arcs  { background-image: radial-gradient(circle at 0 0, transparent 40px, rgba(0,0,0,0.06) 40px, rgba(0,0,0,0.06) 41px, transparent 41px); background-size: 80px 80px; }
+.related-cat {
+  display: inline-flex; font-size: 9px; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  padding: 0.22rem 0.65rem; border-radius: 100px;
+  margin-bottom: 0.6rem; position: relative; z-index: 1;
+}
+.related-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(18px, 4vw, 22px);
+  font-weight: 400; font-style: italic;
+  color: var(--negro); line-height: 1.2;
+  position: relative; z-index: 1;
+}
+.related-meta {
+  font-size: 11px; color: rgba(14,12,10,0.4);
+  margin-top: 0.4rem; position: relative; z-index: 1;
+  letter-spacing: 0.04em;
+}
+
 /* FOOTER */
 footer {
   background: var(--negro); padding: 2.5rem 1.5rem;
@@ -222,7 +277,39 @@ footer {
 }
 .footer-copy { font-size: 11px; color: rgba(245,240,232,0.2); letter-spacing: 0.06em; }
 
-/* NOT FOUND */
+/* READING PROGRESS BAR */
+.reading-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  width: 0%;
+  z-index: 300;
+  transition: width 0.08s linear;
+  box-shadow: 0 0 8px currentColor;
+}
+
+/* SHARE */
+.share-section {
+  max-width: 680px; margin: 0 auto;
+  padding: 0 1.5rem 2rem;
+}
+.share-label {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 0.28em; text-transform: uppercase;
+  color: rgba(14,12,10,0.35); margin-bottom: 0.85rem;
+}
+.share-btns { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.share-btn {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-size: 12px; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 0.6rem 1.25rem; border-radius: 100px;
+  text-decoration: none; transition: all 0.15s;
+  border: 1.5px solid var(--borde); color: var(--negro);
+}
+.share-btn:hover { background: var(--negro); color: var(--crema); border-color: var(--negro); }
+.share-btn-wsp:hover { background: #25d366; border-color: #25d366; }
+.share-btn-x:hover   { background: var(--negro); border-color: var(--negro); }
 .not-found {
   min-height: 80vh; display: flex; flex-direction: column;
   align-items: center; justify-content: center;
@@ -238,11 +325,17 @@ footer {
   nav { padding: 1.25rem 3rem; }
   .post-hero-content { padding: 4rem 3rem 3.5rem; }
   .post-body { padding: 4rem 3rem 6rem; }
+  .share-section { padding: 0 3rem 2rem; }
   .pull-quote { margin: 2.5rem 0; padding: 2rem 2.5rem; }
+  .related-section { padding: 4rem 3rem 5rem; }
+  .related-grid { grid-template-columns: repeat(3, 1fr); }
+  .post-back { padding: 2rem 3rem; }
 }
 </style>
 </head>
 <body>
+
+<div class="reading-progress" id="readingProgress"></div>
 
 <nav id="nav">
   <a href="./index.html" class="nav-logo">ESTÁTICA</a>
@@ -374,7 +467,38 @@ function render() {
   }
 
   const cat = CAT_COLORS[post.category];
+  const pageUrl = window.location.href;
+  const shareText = encodeURIComponent(`"${post.title}" — ESTÁTICA`);
+  const shareUrl  = encodeURIComponent(pageUrl);
+
+  // Update meta tags dynamically
   document.title = `${post.title} — ESTÁTICA`;
+  document.querySelector('meta[name="description"]').setAttribute('content', post.excerpt);
+  document.querySelector('meta[property="og:title"]').setAttribute('content', `${post.title} — ESTÁTICA`);
+  document.querySelector('meta[property="og:description"]').setAttribute('content', post.excerpt);
+  document.querySelector('meta[name="twitter:card"]'); // already set
+
+  // Set progress bar color
+  const progressBar = document.getElementById('readingProgress');
+  progressBar.style.background = cat.color;
+  progressBar.style.color = cat.color;
+
+  // Related posts — same category first, then others
+  const related = POSTS
+    .filter(p => p.slug !== post.slug)
+    .sort((a, b) => (b.category === post.category) - (a.category === post.category))
+    .slice(0, 3);
+
+  const relatedHTML = related.map(r => {
+    const rc = CAT_COLORS[r.category];
+    const patMap = { trabajo:'related-pat-lines', actualidad:'related-pat-zigzag', lgbtq:'related-pat-grid', salud:'related-pat-dots', personal:'related-pat-arcs' };
+    return `
+      <a class="related-card ${patMap[r.category]}" href="./post.html?slug=${r.slug}" style="background-color:${rc.color};">
+        <span class="related-cat" style="background:${rc.color};color:${rc.text};border:1px solid rgba(0,0,0,0.12);">${rc.label}</span>
+        <div class="related-title">${r.title}</div>
+        <div class="related-meta">${formatDate(r.date)} · ${r.readTime} min</div>
+      </a>`;
+  }).join('');
 
   container.innerHTML = `
     <article>
@@ -395,7 +519,7 @@ function render() {
         </div>
       </div>
 
-      <div class="post-body">
+      <div class="post-body" id="postBody">
         <div class="post-content">${post.content}</div>
       </div>
 
@@ -403,7 +527,28 @@ function render() {
         <a href="./index.html" class="back-link">← Volver a todas las entradas</a>
         <span style="font-size:11px;color:var(--gris);letter-spacing:0.06em;">${formatDate(post.date)}</span>
       </div>
+
+      <div class="share-section">
+        <div class="share-label">Compartir esta entrada</div>
+        <div class="share-btns">
+          <a class="share-btn share-btn-wsp"
+             href="https://wa.me/?text=${shareText}%20${shareUrl}"
+             target="_blank" rel="noopener">
+            💬 WhatsApp
+          </a>
+          <a class="share-btn share-btn-x"
+             href="https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}"
+             target="_blank" rel="noopener">
+            𝕏 Twitter
+          </a>
+        </div>
+      </div>
     </article>
+
+    <div class="related-section">
+      <div class="related-label">Otras señales</div>
+      <div class="related-grid">${relatedHTML}</div>
+    </div>
 
     <footer>
       <a href="./index.html" class="footer-logo">ESTÁTICA</a>
@@ -411,10 +556,21 @@ function render() {
     </footer>`;
 }
 
-// Nav scroll
+// Nav scroll + reading progress
 const navEl = document.getElementById('nav');
+const progressEl = document.getElementById('readingProgress');
+
 window.addEventListener('scroll', () => {
   navEl.classList.toggle('scrolled', window.scrollY > 60);
+
+  // Progress bar
+  const body = document.getElementById('postBody');
+  if (body) {
+    const start = body.offsetTop;
+    const end   = body.offsetTop + body.offsetHeight;
+    const pct   = Math.max(0, Math.min(100, ((window.scrollY - start) / (end - start)) * 100));
+    progressEl.style.width = pct + '%';
+  }
 }, { passive: true });
 
 render();

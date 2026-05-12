@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sobre mí — ESTÁTICA</title>
+<meta name="description" content="Quién escribe ESTÁTICA y por qué.">
+<link rel="icon" type="image/svg+xml" href="./favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700;900&family=DM+Serif+Display:ital@0;1&family=Space+Grotesk:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --crema: #f5f0e8;
+  --negro: #0e0c0a;
+  --gris:  #6a6560;
+  --borde: rgba(14,12,10,0.1);
+  --actualidad: #ff2566;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--crema);
+  color: var(--negro);
+  font-family: 'Space Grotesk', sans-serif;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.035;
+  pointer-events: none;
+  z-index: 999;
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  padding: 1rem 1.25rem;
+  display: flex; align-items: center; justify-content: space-between;
+  transition: background 0.4s, backdrop-filter 0.4s, box-shadow 0.4s, border-radius 0.4s, top 0.4s, left 0.4s, right 0.4s, padding 0.4s;
+}
+nav.scrolled {
+  background: rgba(245,240,232,0.88);
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  box-shadow: 0 2px 24px rgba(14,12,10,0.08);
+  border-bottom: 1px solid var(--borde);
+}
+@media (max-width: 767px) {
+  nav.scrolled { top:0.6rem; left:0.6rem; right:0.6rem; border-radius:14px; padding:0.8rem 1.1rem; border:1px solid var(--borde); }
+}
+.nav-logo {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 16px; font-weight: 900;
+  letter-spacing: -0.02em; color: var(--negro);
+  text-decoration: none;
+}
+.nav-back {
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--gris); text-decoration: none;
+  display: flex; align-items: center; gap: 0.4rem;
+  transition: color 0.15s;
+}
+.nav-back:hover { color: var(--negro); }
+
+/* HERO */
+.sobre-hero {
+  min-height: 60svh;
+  background: var(--negro);
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 6rem 1.5rem 3rem;
+  position: relative; overflow: hidden;
+}
+
+.sobre-hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: repeating-linear-gradient(-45deg, rgba(255,37,102,0.04) 0, rgba(255,37,102,0.04) 1px, transparent 0, transparent 50%);
+  background-size: 12px 12px;
+}
+
+.sobre-hero-glow {
+  position: absolute;
+  width: 50vw; height: 50vw; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,37,102,0.1) 0%, transparent 70%);
+  top: -15vw; right: -10vw;
+  pointer-events: none;
+}
+
+.sobre-label {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 0.32em; text-transform: uppercase;
+  color: var(--actualidad); margin-bottom: 1rem;
+  display: flex; align-items: center; gap: 0.6rem;
+  position: relative; z-index: 2;
+}
+.sobre-label::before { content:''; width:18px; height:1px; background:var(--actualidad); }
+
+.sobre-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(48px, 12vw, 96px);
+  font-weight: 400; font-style: italic;
+  color: var(--crema); line-height: 0.95;
+  letter-spacing: -0.02em;
+  position: relative; z-index: 2;
+}
+
+/* CONTENT */
+.sobre-content {
+  max-width: 720px; margin: 0 auto;
+  padding: 4rem 1.5rem 6rem;
+}
+
+.sobre-intro {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(22px, 5vw, 32px);
+  font-weight: 400; font-style: italic;
+  color: var(--negro); line-height: 1.35;
+  margin-bottom: 2.5rem;
+  letter-spacing: -0.01em;
+}
+.sobre-intro em { font-style: normal; color: var(--actualidad); }
+
+.sobre-divider {
+  width: 40px; height: 2px;
+  background: var(--negro); margin: 2.5rem 0;
+}
+
+.sobre-body {
+  font-family: 'Lora', serif;
+  font-size: 18px; line-height: 1.85;
+  color: var(--negro);
+}
+.sobre-body p { margin-bottom: 1.5rem; }
+.sobre-body strong { font-weight: 600; }
+
+/* Photo placeholder */
+.sobre-foto {
+  width: 100%; aspect-ratio: 4/3;
+  background: var(--negro);
+  display: flex; align-items: center; justify-content: center;
+  margin: 2.5rem 0;
+  position: relative; overflow: hidden;
+}
+.sobre-foto-pattern {
+  position: absolute; inset: 0;
+  background-image: radial-gradient(circle, rgba(255,37,102,0.15) 1.5px, transparent 1.5px);
+  background-size: 20px 20px;
+}
+.sobre-foto-text {
+  font-family: 'DM Serif Display', serif;
+  font-size: 14px; font-style: italic;
+  color: rgba(245,240,232,0.3);
+  position: relative; z-index: 1;
+  letter-spacing: 0.06em;
+}
+
+/* Redes */
+.sobre-redes {
+  margin-top: 3rem; padding-top: 2rem;
+  border-top: 1px solid var(--borde);
+}
+.sobre-redes-title {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 0.28em; text-transform: uppercase;
+  color: rgba(14,12,10,0.35); margin-bottom: 1rem;
+}
+.redes-grid {
+  display: flex; flex-wrap: wrap; gap: 0.5rem;
+}
+.red-link {
+  font-size: 12px; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 0.5rem 1.1rem; border-radius: 100px;
+  border: 1.5px solid var(--borde);
+  color: var(--negro); text-decoration: none;
+  transition: all 0.15s;
+}
+.red-link:hover { background: var(--negro); color: var(--crema); border-color: var(--negro); }
+
+/* FOOTER */
+footer {
+  background: var(--negro); padding: 2.5rem 1.5rem;
+}
+.footer-logo {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 24px; font-weight: 900;
+  color: var(--crema); letter-spacing: -0.02em;
+  text-decoration: none; display: block; margin-bottom: 0.5rem;
+}
+.footer-copy { font-size: 11px; color: rgba(245,240,232,0.2); letter-spacing: 0.06em; }
+
+@media (min-width: 768px) {
+  nav { padding: 1.25rem 3rem; }
+  .sobre-hero { padding: 8rem 4rem 4rem; }
+  .sobre-content { padding: 5rem 3rem 7rem; }
+  .sobre-foto { aspect-ratio: 16/7; }
+}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="./index.html" class="nav-logo">ESTÁTICA</a>
+  <a href="./index.html" class="nav-back">← Volver</a>
+</nav>
+
+<section class="sobre-hero">
+  <div class="sobre-hero-glow"></div>
+  <div class="sobre-label">Quién escribe</div>
+  <h1 class="sobre-title">Sobre<br>mí.</h1>
+</section>
+
+<div class="sobre-content">
+
+  <p class="sobre-intro">
+    Soy una persona que escribe sobre lo que no puede <em>quedarse callada.</em>
+  </p>
+
+  <div class="sobre-foto">
+    <div class="sobre-foto-pattern"></div>
+    <div class="sobre-foto-text">— foto acá —</div>
+  </div>
+
+  <div class="sobre-body">
+    <p>
+      ESTÁTICA nació de la necesidad de tener un espacio propio donde las ideas no tuviesen que encajar en ningún formato, algoritmo ni expectativa ajena. Un lugar para pensar en voz alta sobre trabajo, identidad, salud mental, política y todo lo que queda en los márgenes.
+    </p>
+    <p>
+      Escribo desde Buenos Aires, aunque pronto desde otro lado. Trabajo en diseño, tecnología y creatividad — cosas que a veces se cruzan con los temas de este blog y a veces no tienen nada que ver.
+    </p>
+    <p>
+      No tengo una postura neutral. Creo que la neutralidad es una posición política en sí misma, y prefiero ser honestx sobre desde dónde miro las cosas.
+    </p>
+    <p>
+      Si algo de lo que escribís te resuena, me alegra. Si no, también está bien.
+    </p>
+  </div>
+
+  <div class="sobre-divider"></div>
+
+  <div class="sobre-redes">
+    <div class="sobre-redes-title">Encontrarme en</div>
+    <div class="redes-grid">
+      <a href="https://instagram.com/" class="red-link" target="_blank">Instagram</a>
+      <a href="https://twitter.com/" class="red-link" target="_blank">X / Twitter</a>
+      <a href="mailto:hola@estatica.com" class="red-link">Email</a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <a href="./index.html" class="footer-logo">ESTÁTICA</a>
+  <div class="footer-copy">© 2025 ESTÁTICA — todos los derechos reservados</div>
+</footer>
+
+<script>
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+}, { passive: true });
+</script>
+</body>
+</html>
