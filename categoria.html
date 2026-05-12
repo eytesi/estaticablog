@@ -157,6 +157,93 @@ footer { background:var(--negro); padding:2.5rem 1.5rem; margin-top:3rem; }
 @media (min-width:1200px) {
   .grid-section { grid-template-columns:repeat(4,1fr); }
 }
+
+/* ═══════════════════════
+   DARK MODE
+═══════════════════════ */
+html.dark body { background: #0c0a08; color: #f5f0e8; }
+html.dark nav.scrolled {
+  background: rgba(12,10,8,0.9) !important;
+  border-color: rgba(245,240,232,0.06) !important;
+  box-shadow: 0 2px 24px rgba(0,0,0,0.4) !important;
+}
+
+/* Cards */
+html.dark .post-card.card-text-only { background: #161412 !important; }
+
+/* Post body */
+html.dark .post-body { background: #0c0a08; }
+html.dark .post-content { color: #f5f0e8; }
+html.dark .post-content h2,
+html.dark .post-content h3 { color: #f5f0e8; }
+html.dark .post-content blockquote { border-color: rgba(245,240,232,0.3); }
+html.dark .post-content blockquote p { color: rgba(245,240,232,0.8); }
+html.dark .post-back {
+  border-color: rgba(245,240,232,0.08);
+  background: #0c0a08;
+}
+html.dark .back-link { color: #f5f0e8; }
+html.dark .share-section { background: #0c0a08; }
+html.dark .share-btn { color: #f5f0e8; border-color: rgba(245,240,232,0.12); }
+html.dark .share-btn:hover { background: #f5f0e8; color: #0c0a08; border-color: #f5f0e8; }
+
+/* Related */
+html.dark .related-title { color: #0c0a08; }
+
+/* FAQ (index) */
+html.dark .faq-section { background: #0c0a08; }
+html.dark .faq-section .section-title-light { color: #f5f0e8; }
+html.dark .faq-q { color: #f5f0e8; }
+html.dark .faq-a { color: rgba(245,240,232,0.5); }
+html.dark .faq-item { border-color: rgba(245,240,232,0.08); }
+html.dark .faq-list { border-color: rgba(245,240,232,0.08); }
+
+/* Grid divider */
+html.dark .section-divider { background: #0c0a08; }
+html.dark .divider-label,
+html.dark .divider-count { color: rgba(245,240,232,0.25); }
+html.dark .divider-label::before { background: rgba(245,240,232,0.08); }
+
+/* Cat filter mobile */
+html.dark .cat-filter { background: #0c0a08; }
+html.dark .cat-btn { color: #f5f0e8; border-color: rgba(245,240,232,0.15); }
+html.dark .cat-btn.active { background: #f5f0e8; color: #0c0a08; border-color: #f5f0e8; }
+
+/* Sobre */
+html.dark .sobre-content { background: #0c0a08; }
+html.dark .sobre-intro { color: #f5f0e8; }
+html.dark .sobre-body { color: #f5f0e8; }
+html.dark .sobre-divider { background: rgba(245,240,232,0.2); }
+html.dark .sobre-redes { border-color: rgba(245,240,232,0.08); }
+html.dark .sobre-redes-title { color: rgba(245,240,232,0.3); }
+html.dark .red-link { color: #f5f0e8; border-color: rgba(245,240,232,0.15); }
+html.dark .red-link:hover { background: #f5f0e8; color: #0c0a08; }
+
+/* Search overlay - already dark, keep as is */
+
+/* Empty state */
+html.dark .empty-state { background: #0c0a08; }
+html.dark .empty-title { color: #f5f0e8; }
+html.dark .empty-sub { color: rgba(245,240,232,0.4); }
+
+/* Other cats (categoria.html) */
+html.dark .other-cats { background: #0c0a08; }
+html.dark .other-cats-label { color: rgba(245,240,232,0.25); }
+html.dark .other-cat-link { color: #f5f0e8; border-color: rgba(245,240,232,0.15); }
+html.dark .other-cat-link:hover { background: #f5f0e8; color: #0c0a08; }
+
+/* Dark toggle button */
+.nav-dark-btn {
+  background: none; border: none; cursor: pointer;
+  font-size: 15px; padding: 4px;
+  line-height: 1; transition: transform 0.2s;
+  border: 1.5px solid var(--borde);
+  border-radius: 100px;
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+}
+.nav-dark-btn:hover { transform: rotate(20deg); }
+
 </style>
 </head>
 <body>
@@ -164,6 +251,7 @@ footer { background:var(--negro); padding:2.5rem 1.5rem; margin-top:3rem; }
 <nav id="nav">
   <a href="./index.html" class="nav-logo" data-text="ESTÁTICA">ESTÁTICA</a>
   <a href="./index.html" class="nav-back">← Todo</a>
+  <button id="darkToggle" class="nav-dark-btn" onclick="toggleDark()" title="Cambiar tema">🌙</button>
 </nav>
 
 <section class="cat-hero" id="catHero"></section>
@@ -195,13 +283,7 @@ const CAT_COLORS = {
   personal:   { color:'var(--personal)',   hex:'#ff5200', text:'white',        label:'Personal',     pattern:'pat-arcs' },
 };
 
-const POSTS = [
-  { slug:'salud-mental-no-es-lujo',  title:'La salud mental no es un lujo, es un derecho', excerpt:'Vivimos en una cultura que romantiza el agotamiento y patologiza el descanso.', date:'2025-05-10', category:'salud',      tags:['terapia','burnout'], readTime:6 },
-  { slug:'burnout-que-nadie-nombra', title:'Trabajar para vivir, o el burnout que nadie quiere nombrar', excerpt:'El trabajo se convirtió en identidad. Y cuando la identidad se cae, ¿qué queda?', date:'2025-05-03', category:'trabajo',    tags:['trabajo','identidad'], readTime:8 },
-  { slug:'ser-queer-argentina-2025', title:'Ser queer en Argentina en 2025: avances, retrocesos y lo que nadie dice', excerpt:'Un repaso honesto sobre dónde estamos parados.', date:'2025-04-28', category:'lgbtq',      tags:['lgbtq+','derechos'], readTime:10 },
-  { slug:'algoritmos-y-lo-que-no-ven', title:'Los algoritmos y lo que eligen no mostrarte', excerpt:'Cómo los feeds construyen realidades paralelas.', date:'2025-04-15', category:'actualidad', tags:['medios','algoritmos'], readTime:7 },
-  { slug:'nota-personal-mudanza',    title:'Una nota personal sobre mudarse y lo que dejás atrás', excerpt:'No todas las entradas van a ser análisis. A veces es solo esto.', date:'2025-04-05', category:'personal',   tags:['personal','cambio'], readTime:4 },
-];
+// POSTS loaded from posts-data.js
 
 function formatDate(d) {
   return new Date(d).toLocaleDateString('es-AR', { day:'numeric', month:'long', year:'numeric' });

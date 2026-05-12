@@ -694,6 +694,93 @@ footer {
   letter-spacing: 0.04em; line-height: 1.6;
 }
 
+
+/* ═══════════════════════
+   DARK MODE
+═══════════════════════ */
+html.dark body { background: #0c0a08; color: #f5f0e8; }
+html.dark nav.scrolled {
+  background: rgba(12,10,8,0.9) !important;
+  border-color: rgba(245,240,232,0.06) !important;
+  box-shadow: 0 2px 24px rgba(0,0,0,0.4) !important;
+}
+
+/* Cards */
+html.dark .post-card.card-text-only { background: #161412 !important; }
+
+/* Post body */
+html.dark .post-body { background: #0c0a08; }
+html.dark .post-content { color: #f5f0e8; }
+html.dark .post-content h2,
+html.dark .post-content h3 { color: #f5f0e8; }
+html.dark .post-content blockquote { border-color: rgba(245,240,232,0.3); }
+html.dark .post-content blockquote p { color: rgba(245,240,232,0.8); }
+html.dark .post-back {
+  border-color: rgba(245,240,232,0.08);
+  background: #0c0a08;
+}
+html.dark .back-link { color: #f5f0e8; }
+html.dark .share-section { background: #0c0a08; }
+html.dark .share-btn { color: #f5f0e8; border-color: rgba(245,240,232,0.12); }
+html.dark .share-btn:hover { background: #f5f0e8; color: #0c0a08; border-color: #f5f0e8; }
+
+/* Related */
+html.dark .related-title { color: #0c0a08; }
+
+/* FAQ (index) */
+html.dark .faq-section { background: #0c0a08; }
+html.dark .faq-section .section-title-light { color: #f5f0e8; }
+html.dark .faq-q { color: #f5f0e8; }
+html.dark .faq-a { color: rgba(245,240,232,0.5); }
+html.dark .faq-item { border-color: rgba(245,240,232,0.08); }
+html.dark .faq-list { border-color: rgba(245,240,232,0.08); }
+
+/* Grid divider */
+html.dark .section-divider { background: #0c0a08; }
+html.dark .divider-label,
+html.dark .divider-count { color: rgba(245,240,232,0.25); }
+html.dark .divider-label::before { background: rgba(245,240,232,0.08); }
+
+/* Cat filter mobile */
+html.dark .cat-filter { background: #0c0a08; }
+html.dark .cat-btn { color: #f5f0e8; border-color: rgba(245,240,232,0.15); }
+html.dark .cat-btn.active { background: #f5f0e8; color: #0c0a08; border-color: #f5f0e8; }
+
+/* Sobre */
+html.dark .sobre-content { background: #0c0a08; }
+html.dark .sobre-intro { color: #f5f0e8; }
+html.dark .sobre-body { color: #f5f0e8; }
+html.dark .sobre-divider { background: rgba(245,240,232,0.2); }
+html.dark .sobre-redes { border-color: rgba(245,240,232,0.08); }
+html.dark .sobre-redes-title { color: rgba(245,240,232,0.3); }
+html.dark .red-link { color: #f5f0e8; border-color: rgba(245,240,232,0.15); }
+html.dark .red-link:hover { background: #f5f0e8; color: #0c0a08; }
+
+/* Search overlay - already dark, keep as is */
+
+/* Empty state */
+html.dark .empty-state { background: #0c0a08; }
+html.dark .empty-title { color: #f5f0e8; }
+html.dark .empty-sub { color: rgba(245,240,232,0.4); }
+
+/* Other cats (categoria.html) */
+html.dark .other-cats { background: #0c0a08; }
+html.dark .other-cats-label { color: rgba(245,240,232,0.25); }
+html.dark .other-cat-link { color: #f5f0e8; border-color: rgba(245,240,232,0.15); }
+html.dark .other-cat-link:hover { background: #f5f0e8; color: #0c0a08; }
+
+/* Dark toggle button */
+.nav-dark-btn {
+  background: none; border: none; cursor: pointer;
+  font-size: 15px; padding: 4px;
+  line-height: 1; transition: transform 0.2s;
+  border: 1.5px solid var(--borde);
+  border-radius: 100px;
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+}
+.nav-dark-btn:hover { transform: rotate(20deg); }
+
 </style>
 <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
@@ -760,6 +847,7 @@ footer {
     <a href="./admin/" class="nav-admin">Admin</a>
     <a href="./sobre.html" class="nav-admin">Sobre mí</a>
     <button class="nav-search-btn" onclick="openSearch()" aria-label="Buscar">🔍 Buscar</button>
+    <button id="darkToggle" class="nav-dark-btn" onclick="toggleDark()" title="Cambiar tema">🌙</button>
     <button class="nav-burger" id="burgerBtn" onclick="toggleMenu()">
       <span></span><span></span><span></span>
     </button>
@@ -857,137 +945,7 @@ const CAT_COLORS = {
   personal:   { color: 'var(--personal)',   text: 'white',        label: 'Personal',    pattern: 'pat-arcs' },
 };
 
-const POSTS = [
-  {
-    slug: 'salud-mental-no-es-lujo',
-    title: 'La salud mental no es un lujo, es un derecho',
-    excerpt: 'Vivimos en una cultura que romantiza el agotamiento y patologiza el descanso. Algunas notas sobre por qué necesitamos hablar de esto diferente.',
-    date: '2025-05-10',
-    category: 'salud',
-    tags: ['terapia', 'burnout', 'bienestar'],
-    readTime: 6,
-    featured: true,
-    content: `<p>Empezamos por el principio: en Argentina, el acceso a terapia es un privilegio. No un derecho garantizado, no algo que "todo el mundo puede hacer si quiere". Un privilegio económico, geográfico, social.</p>
-
-<p>Y sin embargo, el discurso dominante sigue siendo "tenés que ir al psicólogo", como si eso fuera tan simple como ir al kiosco. Hay una brecha enorme entre lo que se recomienda y lo que es materialmente posible para la mayoría.</p>
-
-<h2>El agotamiento como identidad</h2>
-
-<p>Una de las cosas que más me inquieta de la cultura del trabajo contemporánea es cómo convirtió el agotamiento en señal de status. "Estoy muy ocupado" como respuesta de prestigio. "No tengo tiempo" como indicador de importancia.</p>
-
-<p>Cuando el descanso se convierte en algo que hay que justificar, cuando necesitás pedir permiso para no hacer nada, algo está fundamentalmente mal con el sistema. No con vos.</p>
-
-<h2>Qué hacer con todo esto</h2>
-
-<p>No tengo una respuesta cómoda. Sí tengo algunas convicciones:</p>
-
-<ul>
-<li>Tu estado mental no es un problema de productividad. No existís para rendir.</li>
-<li>Pedir ayuda es un acto político, no una debilidad.</li>
-<li>El sistema que te enferma también quiere venderte la cura. Tené cuidado con eso.</li>
-</ul>
-
-<p>Esto es el principio de una conversación más larga. Pero tenía ganas de escribirlo hoy.</p>`,
-  },
-  {
-    slug: 'burnout-que-nadie-nombra',
-    title: 'Trabajar para vivir, o el burnout que nadie quiere nombrar',
-    excerpt: 'El trabajo se convirtió en identidad. Y cuando la identidad se cae, ¿qué queda?',
-    date: '2025-05-03',
-    category: 'trabajo',
-    tags: ['trabajo', 'identidad', 'agotamiento'],
-    readTime: 8,
-    featured: false,
-    content: `<p>Hay una pregunta que me ronda desde hace meses: ¿cuándo fue que empezamos a presentarnos diciendo a qué nos dedicamos antes de decir quiénes somos?</p>
-
-<p>"Soy diseñadora." "Soy abogado." "Soy emprendedor." El trabajo como primera coordenada identitaria. El trabajo como lo que somos, no lo que hacemos para pagar las cuentas.</p>
-
-<h2>El problema del burnout invisible</h2>
-
-<p>El burnout visible es fácil de identificar: no podés levantarte de la cama, llorás en el baño de la oficina, no podés concentrarte. Ese burnout al menos tiene nombre.</p>
-
-<p>El burnout invisible es más traicionero. Es el que aparece cuando "todo está bien". Cuando tenés trabajo, cuando cobrás, cuando por afuera todo parece funcionar. Pero algo adentro se fue vaciando de a poco, tan despacio que ni lo notaste.</p>
-
-<p>Ese burnout no se diagnostica fácil porque nadie te cree cuando decís que estás agotado si "no tenés motivo".</p>
-
-<h2>Lo que el trabajo no puede darte</h2>
-
-<p>Propósito. Comunidad. Amor. Identidad estable. El trabajo puede rozar estas cosas, pero no puede ser la fuente de ninguna de ellas. Cuando lo convertimos en eso, construimos algo muy frágil sobre una base que no aguanta ese peso.</p>
-
-<p>No sé cómo se sale de esto sistemáticamente. Sí sé que el primer paso es nombrarlo.</p>`,
-  },
-  {
-    slug: 'ser-queer-argentina-2025',
-    title: 'Ser queer en Argentina en 2025: avances, retrocesos y lo que nadie dice',
-    excerpt: 'Un repaso honesto sobre dónde estamos parados después de años de lucha y de pérdidas recientes que duelen más de lo que queremos admitir.',
-    date: '2025-04-28',
-    category: 'lgbtq',
-    tags: ['lgbtq+', 'derechos', 'política'],
-    readTime: 10,
-    featured: false,
-    content: `<p>Argentina tiene una historia de activismo LGBTQ+ que es, a la vez, motivo de orgullo y de advertencia. Fuimos pioneros con la ley de matrimonio igualitario en 2010, con la ley de identidad de género en 2012. Construimos algo que parecía sólido.</p>
-
-<p>Y sin embargo, 2024 y 2025 vinieron con retrocesos que no esperábamos. O que esperábamos pero no queríamos ver.</p>
-
-<h2>Lo que tenemos</h2>
-
-<p>Todavía tenemos marcos legales importantes. El problema es que la ley y la práctica son dos cosas distintas. Podés tener el nombre que querés en el DNI y igualmente que te discriminen en una entrevista de trabajo. Podés casarte y igualmente que en tu familia de origen no puedas mencionar a tu pareja.</p>
-
-<p>Los derechos en papel no siempre se traducen en seguridad real.</p>
-
-<h2>Lo que perdemos</h2>
-
-<p>Estamos perdiendo espacios. Físicos, simbólicos, políticos. Hay una ofensiva muy organizada que viene por los avances de las últimas décadas, y está funcionando en algunos frentes.</p>
-
-<p>No escribo esto para el pesimismo. Lo escribo porque nombrar lo que pasa es el primer paso para no normalizarlo.</p>`,
-  },
-  {
-    slug: 'algoritmos-y-lo-que-no-ven',
-    title: 'Los algoritmos y lo que eligen no mostrarte',
-    excerpt: 'Cómo los feeds construyen realidades paralelas y por qué eso importa más de lo que creemos.',
-    date: '2025-04-15',
-    category: 'actualidad',
-    tags: ['medios', 'algoritmos', 'información'],
-    readTime: 7,
-    featured: false,
-    content: `<p>Hay algo perturbador en darse cuenta de que la información que consumís no es neutral. Que hay decisiones —humanas y algorítmicas— detrás de qué aparece en tu feed y qué no.</p>
-
-<p>No es novedad. Pero a veces hay que recordarlo.</p>
-
-<h2>El problema de la cámara de eco</h2>
-
-<p>No es solo que los algoritmos te muestran lo que ya pensás. Es que gradualmente hacen que te sea más difícil imaginar que otros puntos de vista existen y tienen peso real para la gente que los sostiene.</p>
-
-<p>La polarización no viene del desacuerdo. Viene de la incapacidad de reconocer al otro como alguien que razona, aunque llegue a conclusiones distintas.</p>
-
-<p>Eso es lo que los algoritmos optimizados para el engagement están haciendo: no nos dividen, nos dejan de ver.</p>`,
-  },
-  {
-    slug: 'nota-personal-mudanza',
-    title: 'Una nota personal sobre mudarse y lo que dejás atrás',
-    excerpt: 'No todas las entradas van a ser análisis. A veces es solo esto: el movimiento como forma de entender.',
-    date: '2025-04-05',
-    category: 'personal',
-    tags: ['personal', 'cambio', 'mudanza'],
-    readTime: 4,
-    featured: false,
-    content: `<p>Me mudo pronto. A un lugar que no conozco del todo, con una persona que recién estoy conociendo, por razones que tienen más de impulso que de plan.</p>
-
-<p>Y estoy pensando en lo que significa mudarse. No el acto físico —eso es logística, es cajas, es cambio de dirección— sino lo que pasa adentro cuando decidís que el lugar donde estás ya no es el lugar donde querés estar.</p>
-
-<h2>Lo que se queda</h2>
-
-<p>Nada de lo importante se queda en los lugares. Eso lo entendí tarde. Las personas, las memorias, las cosas que aprendiste de vivir en algún sitio: eso viaja con vos.</p>
-
-<p>Lo que se queda es una versión de vos que ya no existe. Y está bien que sea así.</p>
-
-<h2>El miedo como señal</h2>
-
-<p>Tengo miedo. Y al mismo tiempo, la mejor decisión que tomé en los últimos años fue la que más miedo me daba. Voy a intentar seguir confiando en eso.</p>
-
-<p>Esta fue una entrada diferente. Pero ESTÁTICA también es esto.</p>`,
-  },
-];
+// POSTS loaded from posts-data.js
 
 // ══════════════════════════
 // RENDER HERO
