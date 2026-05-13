@@ -32,7 +32,7 @@ const posts = files.map(file => {
 }).sort((a, b) => new Date(b.date) - new Date(a.date));
 
 // ── Generate posts-data.js ──
-const js = `// Auto-generado por build.js — no editar manualmente\n// Última actualización: ${new Date().toISOString()}\nwindow.POSTS_EXTERNAL = ${JSON.stringify(posts)};\n`;
+const js = `// Auto-generado por build.js — no editar manualmente\n// Última actualización: ${new Date().toISOString()}\nvar POSTS_CMS = ${JSON.stringify(posts)};\n`;
 
 fs.writeFileSync(OUTPUT_JS, js);
 console.log(`✓ posts-data.js generado con ${posts.length} entradas`);
