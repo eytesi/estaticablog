@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ESTÁTICA</title>
+<meta name="description" content="">
+<link rel="icon" type="image/svg+xml" href="./favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700;900&family=DM+Serif+Display:ital@0;1&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --crema: #f5f0e8;
+  --negro: #0e0c0a;
+  --gris:  #6a6560;
+  --borde: rgba(14,12,10,0.1);
+  --trabajo:    #f5df00;
+  --actualidad: #ff2566;
+  --lgbtq:      #3d5aff;
+  --salud:      #00d46a;
+  --personal:   #ff5200;
+}
+html { scroll-behavior: smooth; }
+body { background: var(--crema); color: var(--negro); font-family: 'Space Grotesk', sans-serif; overflow-x: hidden; }
+body::before {
+  content: ''; position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.035; pointer-events: none; z-index: 999;
+}
+
+/* DARK MODE */
+html.dark body { background: #0c0a08; color: #f5f0e8; }
+html.dark nav.scrolled { background: rgba(12,10,8,0.9) !important; border-color: rgba(245,240,232,0.06) !important; }
+html.dark .section-divider { background: #0c0a08; }
+html.dark .divider-label, html.dark .divider-count { color: rgba(245,240,232,0.25); }
+html.dark .other-tags { background: #0c0a08; }
+html.dark .other-tag-link { color: #f5f0e8; border-color: rgba(245,240,232,0.15); }
+html.dark .other-tag-link:hover { background: #f5f0e8; color: #0c0a08; }
+html.dark .empty-title { color: #f5f0e8; }
+html.dark .card-text-only { background: #161412 !important; }
+.nav-dark-btn { background:none; border:1.5px solid var(--borde); border-radius:100px; width:32px; height:32px; display:flex; align-items:center; justify-content:center; font-size:15px; cursor:pointer; transition:transform 0.2s; }
+.nav-dark-btn:hover { transform:rotate(20deg); }
+
+/* NAV */
+nav { position:fixed; top:0; left:0; right:0; z-index:200; padding:1rem 1.25rem; display:flex; align-items:center; justify-content:space-between; transition:background 0.4s, backdrop-filter 0.4s, box-shadow 0.4s, border-radius 0.4s, top 0.4s, left 0.4s, right 0.4s, padding 0.4s; }
+nav.scrolled { background:rgba(245,240,232,0.88); backdrop-filter:blur(20px) saturate(1.4); -webkit-backdrop-filter:blur(20px) saturate(1.4); box-shadow:0 2px 24px rgba(14,12,10,0.08); border-bottom:1px solid var(--borde); }
+@media (max-width:767px) { nav.scrolled { top:.6rem; left:.6rem; right:.6rem; border-radius:14px; padding:.8rem 1.1rem; border:1px solid var(--borde); } }
+.nav-logo { font-family:'Unbounded',sans-serif; font-size:16px; font-weight:900; letter-spacing:-0.02em; color:var(--negro); text-decoration:none; position:relative; }
+html.dark .nav-logo { color:#f5f0e8; }
+.nav-right { display:flex; align-items:center; gap:0.6rem; }
+.nav-back { font-size:11px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:var(--gris); text-decoration:none; transition:color 0.15s; }
+.nav-back:hover { color:var(--negro); }
+
+/* HERO */
+.tag-hero {
+  min-height: 50svh;
+  background: var(--negro);
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 5rem 1.5rem 3rem;
+  position: relative; overflow: hidden;
+}
+.tag-hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: linear-gradient(rgba(245,240,232,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(245,240,232,0.04) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+.tag-hero-glow {
+  position: absolute; width:50vw; height:50vw; border-radius:50%;
+  background: radial-gradient(circle, rgba(255,37,102,0.08) 0%, transparent 70%);
+  top:-15vw; right:-10vw; pointer-events:none;
+}
+.tag-hero-label { font-size:10px; font-weight:700; letter-spacing:0.32em; text-transform:uppercase; color:rgba(245,240,232,0.4); margin-bottom:0.75rem; position:relative; z-index:2; }
+.tag-hero-name {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(42px, 14vw, 88px);
+  font-weight: 400; font-style: italic;
+  color: var(--crema); line-height: 0.95;
+  letter-spacing: -0.02em;
+  position: relative; z-index: 2;
+}
+.tag-hash { color: var(--actualidad); }
+
+/* GRID */
+.grid-section { padding:3px; display:grid; grid-template-columns:1fr; gap:3px; }
+.post-card { position:relative; overflow:hidden; cursor:pointer; text-decoration:none; color:inherit; display:flex; flex-direction:column; min-height:240px; transition:transform 0.2s; }
+.post-card:active { transform:scale(0.99); }
+.card-bg { position:absolute; inset:0; transition:transform 0.4s; }
+.post-card:hover .card-bg { transform:scale(1.03); }
+.card-body { position:relative; z-index:2; padding:1.25rem; margin-top:auto; }
+.card-cat { display:inline-flex; font-size:9px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; padding:.25rem .65rem; border-radius:100px; margin-bottom:.75rem; }
+.card-dark .card-title, .card-dark .card-excerpt, .card-dark .card-meta { color:var(--negro); }
+.card-dark .card-meta { color:rgba(14,12,10,0.5); }
+.card-title { font-family:'DM Serif Display',serif; font-size:clamp(20px,5vw,26px); font-weight:400; font-style:italic; line-height:1.15; margin-bottom:.5rem; letter-spacing:-0.01em; }
+.card-excerpt { font-size:13px; line-height:1.7; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; margin-bottom:.75rem; font-weight:300; }
+.card-meta { display:flex; align-items:center; gap:.75rem; font-size:11px; font-weight:500; }
+.card-meta-sep { opacity:.3; }
+.pat-lines { background-image:repeating-linear-gradient(-45deg,rgba(0,0,0,.07) 0,rgba(0,0,0,.07) 1px,transparent 0,transparent 50%); background-size:12px 12px; }
+.pat-dots { background-image:radial-gradient(circle,rgba(0,0,0,.15) 1.5px,transparent 1.5px); background-size:18px 18px; }
+.pat-grid { background-image:linear-gradient(rgba(0,0,0,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.08) 1px,transparent 1px); background-size:22px 22px; }
+.pat-zigzag { background-image:linear-gradient(135deg,rgba(0,0,0,.07) 25%,transparent 25%) -10px 0,linear-gradient(225deg,rgba(0,0,0,.07) 25%,transparent 25%) -10px 0,linear-gradient(315deg,rgba(0,0,0,.07) 25%,transparent 25%),linear-gradient(45deg,rgba(0,0,0,.07) 25%,transparent 25%); background-size:20px 20px; }
+.pat-arcs { background-image:radial-gradient(circle at 0 0,transparent 40px,rgba(0,0,0,.06) 40px,rgba(0,0,0,.06) 41px,transparent 41px); background-size:80px 80px; }
+
+/* DIVIDER */
+.section-divider { padding:2.5rem 1.5rem 0; display:flex; align-items:center; justify-content:space-between; }
+.divider-label { font-size:10px; font-weight:700; letter-spacing:0.28em; text-transform:uppercase; color:rgba(14,12,10,0.35); display:flex; align-items:center; gap:.6rem; }
+.divider-label::before { content:''; width:20px; height:1px; background:var(--borde); }
+.divider-count { font-family:'DM Serif Display',serif; font-size:13px; font-style:italic; color:rgba(14,12,10,0.3); }
+
+/* OTHER TAGS */
+.other-tags { padding:3rem 1.5rem 0; }
+.other-tags-label { font-size:10px; font-weight:700; letter-spacing:0.28em; text-transform:uppercase; color:rgba(14,12,10,0.35); margin-bottom:1rem; }
+.other-tags-grid { display:flex; flex-wrap:wrap; gap:.5rem; }
+.other-tag-link { font-size:11px; font-weight:600; letter-spacing:0.1em; padding:.45rem 1rem; border-radius:100px; border:1.5px solid var(--borde); color:var(--negro); text-decoration:none; transition:all 0.15s; }
+.other-tag-link:hover { background:var(--negro); color:var(--crema); border-color:var(--negro); }
+html.dark .other-tag-link { color:#f5f0e8; }
+
+/* EMPTY */
+.empty-state { padding:5rem 1.5rem; text-align:center; }
+.empty-title { font-family:'DM Serif Display',serif; font-size:28px; font-style:italic; margin-bottom:.5rem; }
+.empty-sub { font-size:14px; color:var(--gris); }
+
+/* FOOTER */
+footer { background:var(--negro); padding:2.5rem 1.5rem; margin-top:3rem; }
+.footer-logo { font-family:'Unbounded',sans-serif; font-size:22px; font-weight:900; color:var(--crema); letter-spacing:-0.02em; text-decoration:none; display:block; margin-bottom:.5rem; }
+.footer-copy { font-size:11px; color:rgba(245,240,232,0.2); }
+
+.fade-in { opacity:0; transform:translateY(16px); transition:opacity 0.5s, transform 0.5s; }
+.fade-in.visible { opacity:1; transform:translateY(0); }
+
+@media (min-width:768px) {
+  nav { padding:1.25rem 3rem; }
+  .tag-hero { padding:7rem 4rem 4rem; }
+  .grid-section { grid-template-columns:repeat(3,1fr); }
+  .other-tags { padding:3rem 3rem 0; }
+  footer { padding:2.5rem 4rem; }
+}
+@media (min-width:1200px) { .grid-section { grid-template-columns:repeat(4,1fr); } }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="./index.html" class="nav-logo">ESTÁTICA</a>
+  <div class="nav-right">
+    <a href="./index.html" class="nav-back">← Todo</a>
+    <button id="darkToggle" class="nav-dark-btn" onclick="toggleDark()" title="Cambiar tema">🌙</button>
+  </div>
+</nav>
+
+<section class="tag-hero" id="tagHero">
+  <div class="tag-hero-glow"></div>
+  <div class="tag-hero-label">Etiqueta</div>
+  <div class="tag-hero-name" id="tagName"></div>
+</section>
+
+<div class="section-divider fade-in">
+  <div class="divider-label" id="divLabel">Entradas</div>
+  <div class="divider-count" id="postCount"></div>
+</div>
+
+<div class="grid-section fade-in" id="grid"></div>
+<div class="empty-state" id="emptyState" style="display:none;">
+  <div class="empty-title">Sin entradas con esta etiqueta.</div>
+  <div class="empty-sub">Todavía no hay nada acá.</div>
+</div>
+
+<div class="other-tags fade-in" id="otherTags"></div>
+
+<footer>
+  <a href="./index.html" class="footer-logo">ESTÁTICA</a>
+  <div class="footer-copy">© 2025 ESTÁTICA</div>
+</footer>
+
+<script src="./posts-data.js"></script>
+<script>
+const POSTS_LOCAL = [];
+const POSTS = (typeof window !== 'undefined' && window.POSTS_EXTERNAL) ? window.POSTS_EXTERNAL : POSTS_LOCAL;
+
+const CAT_COLORS = {
+  trabajo:    { color:'var(--trabajo)',    text:'var(--negro)', label:'Trabajo',     pattern:'pat-lines' },
+  actualidad: { color:'var(--actualidad)', text:'white',        label:'Actualidad',  pattern:'pat-zigzag' },
+  lgbtq:      { color:'var(--lgbtq)',      text:'white',        label:'LGBTQ+',      pattern:'pat-grid' },
+  salud:      { color:'var(--salud)',      text:'var(--negro)', label:'Salud mental',pattern:'pat-dots' },
+  personal:   { color:'var(--personal)',   text:'white',        label:'Personal',    pattern:'pat-arcs' },
+};
+
+function formatDate(d) {
+  return new Date(d).toLocaleDateString('es-AR', { day:'numeric', month:'long', year:'numeric' });
+}
+
+const params = new URLSearchParams(window.location.search);
+const tag = decodeURIComponent(params.get('tag') || '');
+
+if (!tag) window.location.href = './index.html';
+
+document.title = `#${tag} — ESTÁTICA`;
+document.querySelector('meta[name="description"]').setAttribute('content', `Entradas etiquetadas con #${tag} en ESTÁTICA.`);
+
+document.getElementById('tagName').innerHTML = `<span class="tag-hash">#</span>${tag}`;
+
+const posts = POSTS.filter(p => (p.tags || []).map(t => t.toLowerCase()).includes(tag.toLowerCase()));
+document.getElementById('divLabel').textContent = `Entradas con #${tag}`;
+document.getElementById('postCount').textContent = `${posts.length} entrada${posts.length !== 1 ? 's' : ''}`;
+
+if (!posts.length) {
+  document.getElementById('emptyState').style.display = 'block';
+} else {
+  document.getElementById('grid').innerHTML = posts.map((post, i) => {
+    const c = CAT_COLORS[post.category];
+    const isWide = i === 0;
+    return `<a class="post-card ${isWide ? 'card-wide' : ''} card-dark ${c.pattern} fade-in"
+       href="./post.html?slug=${post.slug}"
+       style="background-color:${c.color};">
+      <div class="card-body">
+        <span class="card-cat" style="background:${c.color};color:${c.text};border:1px solid rgba(0,0,0,.12);">${c.label}</span>
+        <h2 class="card-title">${post.title}</h2>
+        <p class="card-excerpt">${post.excerpt}</p>
+        <div class="card-meta">
+          <span>📅 ${formatDate(post.date)}</span>
+          <span class="card-meta-sep">·</span>
+          <span>⏱ ${post.readTime} min</span>
+        </div>
+      </div>
+    </a>`;
+  }).join('');
+}
+
+// All tags except current
+const allTags = [...new Set(POSTS.flatMap(p => p.tags || []))].filter(t => t.toLowerCase() !== tag.toLowerCase()).sort();
+if (allTags.length) {
+  document.getElementById('otherTags').innerHTML = `
+    <div class="other-tags-label">Otras etiquetas</div>
+    <div class="other-tags-grid">
+      ${allTags.map(t => `<a href="./tag.html?tag=${encodeURIComponent(t)}" class="other-tag-link">#${t}</a>`).join('')}
+    </div>`;
+}
+
+// Nav scroll
+const navEl = document.getElementById('nav');
+window.addEventListener('scroll', () => navEl.classList.toggle('scrolled', window.scrollY > 60), { passive:true });
+
+// Fade in
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+}, { threshold:0.08 });
+document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+
+// Dark mode
+(function() {
+  if (localStorage.getItem('estatica-theme') === 'dark') document.documentElement.classList.add('dark');
+})();
+function toggleDark() {
+  const isDark = document.documentElement.classList.toggle('dark');
+  localStorage.setItem('estatica-theme', isDark ? 'dark' : 'light');
+  const btn = document.getElementById('darkToggle');
+  if (btn) btn.textContent = isDark ? '☀️' : '🌙';
+}
+document.addEventListener('DOMContentLoaded', () => {
+  const btn = document.getElementById('darkToggle');
+  if (btn) btn.textContent = document.documentElement.classList.contains('dark') ? '☀️' : '🌙';
+});
+</script>
+</body>
+</html>

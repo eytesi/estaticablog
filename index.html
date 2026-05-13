@@ -964,7 +964,7 @@ function renderHero() {
         <h1 class="hero-title">${post.title}</h1>
         <p class="hero-excerpt">${post.excerpt}</p>
         <div class="hero-meta">
-          <span>${formatDate(post.date)}</span>
+          <span>📅 ${formatDate(post.date)}</span>
           <span class="card-meta-sep">·</span>
           <span>${post.readTime} min de lectura</span>
         </div>
@@ -1008,9 +1008,9 @@ function renderGrid(cat = 'all') {
             <h2 class="card-title" style="font-size:clamp(24px,5vw,38px);">${post.title}</h2>
             <p class="card-excerpt">${post.excerpt}</p>
             <div class="card-meta" style="color:rgba(245,240,232,0.4);">
-              <span>${formatDate(post.date)}</span>
+              <span>📅 ${formatDate(post.date)}</span>
               <span class="card-meta-sep">·</span>
-              <span>${post.readTime} min</span>
+              <span>⏱ ${post.readTime} min</span>
             </div>
           </div>
         </a>`;
@@ -1026,9 +1026,9 @@ function renderGrid(cat = 'all') {
           <h2 class="card-title">${post.title}</h2>
           <p class="card-excerpt">${post.excerpt}</p>
           <div class="card-meta">
-            <span>${formatDate(post.date)}</span>
+            <span>📅 ${formatDate(post.date)}</span>
             <span class="card-meta-sep">·</span>
-            <span>${post.readTime} min</span>
+            <span>⏱ ${post.readTime} min</span>
           </div>
         </div>
       </a>`;

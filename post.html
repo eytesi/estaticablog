@@ -418,11 +418,110 @@ html.dark .other-cat-link:hover { background: #f5f0e8; color: #0c0a08; }
 }
 .nav-dark-btn:hover { transform: rotate(20deg); }
 
+
+/* STICKY READING HEADER */
+.sticky-read {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 198;
+  background: rgba(245,240,232,0.96);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transform: translateY(-100%);
+  transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+  padding: 0.7rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid var(--borde);
+  margin-top: 54px;
+}
+.sticky-read.visible { transform: translateY(0); }
+.sticky-read-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 14px; font-style: italic;
+  color: var(--negro); white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis;
+  flex: 1; min-width: 0;
+}
+.sticky-read-right {
+  display: flex; align-items: center; gap: 0.75rem;
+  flex-shrink: 0;
+}
+.sticky-read-min {
+  font-size: 11px; font-weight: 500;
+  letter-spacing: 0.06em; color: var(--gris);
+  white-space: nowrap;
+}
+.sticky-read-bar-wrap {
+  width: 80px; height: 3px;
+  background: var(--borde); border-radius: 2px;
+  overflow: hidden;
+}
+.sticky-read-bar {
+  height: 100%; width: 0%;
+  border-radius: 2px;
+  transition: width 0.1s linear;
+}
+
+html.dark .sticky-read {
+  background: rgba(12,10,8,0.96);
+  border-color: rgba(245,240,232,0.06);
+}
+html.dark .sticky-read-title { color: var(--crema); }
+html.dark .sticky-read-bar-wrap { background: rgba(245,240,232,0.08); }
+
+/* CLICKABLE TAGS */
+a.post-tag {
+  text-decoration: none;
+  transition: opacity 0.15s, background 0.15s;
+}
+a.post-tag:hover { opacity: 0.75; }
+
+/* GISCUS COMMENTS */
+.comments-section {
+  max-width: 680px; margin: 0 auto;
+  padding: 0 1.5rem 4rem;
+}
+.comments-label {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 0.32em; text-transform: uppercase;
+  color: rgba(14,12,10,0.35); margin-bottom: 1.5rem;
+  display: flex; align-items: center; gap: 0.6rem;
+}
+.comments-label::before { content:''; width:18px; height:1px; background:var(--borde); }
+.comments-setup {
+  background: var(--borde);
+  border: 1.5px dashed rgba(14,12,10,0.15);
+  padding: 1.5rem;
+  font-size: 13px; color: var(--gris); line-height: 1.7;
+}
+.comments-setup a { color: var(--negro); }
+html.dark .comments-section { background: #0c0a08; }
+html.dark .comments-label { color: rgba(245,240,232,0.25); }
+html.dark .comments-label::before { background: rgba(245,240,232,0.08); }
+
+@media (min-width: 768px) {
+  .sticky-read { padding: 0.7rem 3rem; margin-top: 60px; }
+  .sticky-read-bar-wrap { width: 120px; }
+  .comments-section { padding: 0 3rem 5rem; }
+}
+
 </style>
 </head>
 <body>
 
 <div class="reading-progress" id="readingProgress"></div>
+<div class="sticky-read" id="stickyRead">
+  <div class="sticky-read-title" id="stickyTitle"></div>
+  <div class="sticky-read-right">
+    <span class="sticky-read-min" id="stickyMin"></span>
+    <div class="sticky-read-bar-wrap">
+      <div class="sticky-read-bar" id="stickyBar"></div>
+    </div>
+  </div>
+</div>
 
 <nav id="nav">
   <a href="./index.html" class="nav-logo">ESTÁTICA</a>
@@ -515,7 +614,7 @@ function render() {
             <span>${post.readTime} min de lectura</span>
           </div>
           <div class="post-tags">
-            ${post.tags.map(t => `<span class="post-tag">#${t}</span>`).join('')}
+            ${post.tags.map(t => `<a class="post-tag" href="./tag.html?tag=${encodeURIComponent(t)}">#${t}</a>`).join('')}
           </div>
         </div>
       </div>
@@ -544,6 +643,11 @@ function render() {
           </a>
         </div>
       </div>
+
+      <div class="comments-section">
+        <div class="comments-label">Comentarios</div>
+        <div id="giscusContainer"></div>
+      </div>
     </article>
 
     <div class="related-section">
@@ -557,24 +661,81 @@ function render() {
     </footer>`;
 }
 
-// Nav scroll + reading progress
+// Nav scroll + reading progress + sticky header
 const navEl = document.getElementById('nav');
 const progressEl = document.getElementById('readingProgress');
+const stickyEl   = document.getElementById('stickyRead');
+const stickyBar  = document.getElementById('stickyBar');
+const stickyMin  = document.getElementById('stickyMin');
 
 window.addEventListener('scroll', () => {
   navEl.classList.toggle('scrolled', window.scrollY > 60);
 
-  // Progress bar
   const body = document.getElementById('postBody');
-  if (body) {
-    const start = body.offsetTop;
-    const end   = body.offsetTop + body.offsetHeight;
-    const pct   = Math.max(0, Math.min(100, ((window.scrollY - start) / (end - start)) * 100));
-    progressEl.style.width = pct + '%';
+  const hero = document.querySelector('.post-hero');
+  if (!body) return;
+
+  const heroBottom = hero ? hero.offsetTop + hero.offsetHeight : 300;
+  const start = body.offsetTop;
+  const end   = body.offsetTop + body.offsetHeight;
+  const pct   = Math.max(0, Math.min(100, ((window.scrollY - start) / (end - start)) * 100));
+
+  // Top progress bar
+  progressEl.style.width = pct + '%';
+
+  // Sticky header
+  if (stickyEl) {
+    stickyEl.classList.toggle('visible', window.scrollY > heroBottom - 60);
+    if (stickyBar) stickyBar.style.width = pct + '%';
+    if (stickyMin && window._postReadTime) {
+      const remaining = Math.max(0, Math.ceil(window._postReadTime * (1 - pct / 100)));
+      stickyMin.textContent = remaining <= 1 ? 'casi terminás' : remaining + ' min restantes';
+    }
   }
 }, { passive: true });
 
 render();
+
+// Setup sticky title & Giscus after render
+document.addEventListener('DOMContentLoaded', () => {});
+setTimeout(() => {
+  const titleEl = document.getElementById('stickyTitle');
+  const params = new URLSearchParams(window.location.search);
+  const slug = params.get('slug');
+  const post = POSTS.find(p => p.slug === slug);
+  if (!post) return;
+
+  // Set sticky title & color
+  if (titleEl) titleEl.textContent = post.title;
+  window._postReadTime = post.readTime;
+  const cat = CAT_COLORS[post.category];
+  if (stickyBar) stickyBar.style.background = cat.color;
+
+  // Load Giscus
+  const container = document.getElementById('giscusContainer');
+  if (container) {
+    const isDark = document.documentElement.classList.contains('dark');
+    const script = document.createElement('script');
+    script.src = 'https://giscus.app/client.js';
+    script.setAttribute('data-repo',            'TU_USUARIO/TU_REPO');       // ← reemplazar
+    script.setAttribute('data-repo-id',         'TU_REPO_ID');               // ← de giscus.app
+    script.setAttribute('data-category',        'Announcements');
+    script.setAttribute('data-category-id',     'TU_CATEGORY_ID');           // ← de giscus.app
+    script.setAttribute('data-mapping',         'pathname');
+    script.setAttribute('data-strict',          '0');
+    script.setAttribute('data-reactions-enabled','1');
+    script.setAttribute('data-emit-metadata',   '0');
+    script.setAttribute('data-input-position',  'top');
+    script.setAttribute('data-theme',           isDark ? 'dark' : 'light');
+    script.setAttribute('data-lang',            'es');
+    script.setAttribute('crossorigin',          'anonymous');
+    script.async = true;
+    container.appendChild(script);
+  }
+}, 100);
+
+// Sync Giscus theme with dark mode
+const _origToggleDark = typeof toggleDark !== 'undefined' ? toggleDark : null;
 
 // ── DARK MODE ──
 (function() {
@@ -587,6 +748,14 @@ function toggleDark() {
   localStorage.setItem('estatica-theme', isDark ? 'dark' : 'light');
   const btn = document.getElementById('darkToggle');
   if (btn) btn.textContent = isDark ? '☀️' : '🌙';
+  // Sync Giscus theme
+  const iframe = document.querySelector('iframe.giscus-frame');
+  if (iframe) {
+    iframe.contentWindow.postMessage(
+      { giscus: { setConfig: { theme: isDark ? 'dark' : 'light' } } },
+      'https://giscus.app'
+    );
+  }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
