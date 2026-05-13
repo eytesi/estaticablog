@@ -508,6 +508,80 @@ html.dark .comments-label::before { background: rgba(245,240,232,0.08); }
   .comments-section { padding: 0 3rem 5rem; }
 }
 
+
+/* REACTIONS + COPY */
+.reactions-section {
+  max-width: 680px; margin: 0 auto;
+  padding: 0 1.5rem 2rem;
+  display: flex; align-items: center;
+  justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+}
+.reactions-label {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 0.28em; text-transform: uppercase;
+  color: rgba(14,12,10,0.35);
+}
+html.dark .reactions-label { color: rgba(245,240,232,0.25); }
+
+.reactions-btns {
+  display: flex; gap: 0.4rem;
+}
+.reaction-btn {
+  background: none;
+  border: 1.5px solid var(--borde);
+  border-radius: 100px;
+  padding: 0.4rem 0.85rem;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex; align-items: center; gap: 0.35rem;
+  transition: transform 0.15s, border-color 0.15s, background 0.15s;
+  position: relative;
+  font-family: 'Space Grotesk', sans-serif;
+}
+.reaction-btn:hover { transform: scale(1.1); border-color: var(--negro); }
+html.dark .reaction-btn { border-color: rgba(245,240,232,0.15); }
+html.dark .reaction-btn:hover { border-color: rgba(245,240,232,0.5); }
+
+.reaction-btn.selected {
+  background: var(--negro); border-color: var(--negro);
+  transform: scale(1.12);
+}
+html.dark .reaction-btn.selected {
+  background: rgba(245,240,232,0.12);
+  border-color: rgba(245,240,232,0.4);
+}
+
+@keyframes reactionPop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.4) rotate(-5deg); }
+  70%  { transform: scale(0.95) rotate(3deg); }
+  100% { transform: scale(1.12); }
+}
+.reaction-btn.pop { animation: reactionPop 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+
+/* Copy link */
+.copy-btn {
+  background: none;
+  border: 1.5px solid var(--borde);
+  border-radius: 100px;
+  padding: 0.4rem 1rem;
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  cursor: pointer; color: var(--negro);
+  display: flex; align-items: center; gap: 0.4rem;
+  transition: all 0.15s;
+  font-family: 'Space Grotesk', sans-serif;
+  white-space: nowrap;
+}
+.copy-btn:hover { background: var(--negro); color: var(--crema); border-color: var(--negro); }
+.copy-btn.copied { background: var(--salud); color: var(--negro); border-color: var(--salud); }
+html.dark .copy-btn { color: #f5f0e8; border-color: rgba(245,240,232,0.15); }
+html.dark .copy-btn:hover { background: #f5f0e8; color: #0c0a08; border-color: #f5f0e8; }
+
+@media (min-width: 768px) {
+  .reactions-section { padding: 0 3rem 2rem; }
+}
+
 </style>
 </head>
 <body>
@@ -644,6 +718,21 @@ function render() {
         </div>
       </div>
 
+      <div class="reactions-section">
+        <div>
+          <div class="reactions-label">¿Qué te pareció?</div>
+          <div class="reactions-btns" id="reactionBtns">
+            <button class="reaction-btn" data-reaction="❤️" onclick="react(this)">❤️</button>
+            <button class="reaction-btn" data-reaction="🔥" onclick="react(this)">🔥</button>
+            <button class="reaction-btn" data-reaction="💯" onclick="react(this)">💯</button>
+            <button class="reaction-btn" data-reaction="🤔" onclick="react(this)">🤔</button>
+          </div>
+        </div>
+        <button class="copy-btn" id="copyBtn" onclick="copyLink()">
+          🔗 Copiar link
+        </button>
+      </div>
+
       <div class="comments-section">
         <div class="comments-label">Comentarios</div>
         <div id="giscusContainer"></div>
@@ -717,17 +806,17 @@ setTimeout(() => {
     const isDark = document.documentElement.classList.contains('dark');
     const script = document.createElement('script');
     script.src = 'https://giscus.app/client.js';
-    script.setAttribute('data-repo',            'TU_USUARIO/TU_REPO');       // ← reemplazar
-    script.setAttribute('data-repo-id',         'TU_REPO_ID');               // ← de giscus.app
+    script.setAttribute('data-repo',            'eytesi/estaticablog');       // ← reemplazar
+    script.setAttribute('data-repo-id',         'R_kgDOSbqTAQ');               // ← de giscus.app
     script.setAttribute('data-category',        'Announcements');
-    script.setAttribute('data-category-id',     'TU_CATEGORY_ID');           // ← de giscus.app
+    script.setAttribute('data-category-id',     'DIC_kwDOSbqTAc4C89X9');           // ← de giscus.app
     script.setAttribute('data-mapping',         'pathname');
     script.setAttribute('data-strict',          '0');
     script.setAttribute('data-reactions-enabled','1');
     script.setAttribute('data-emit-metadata',   '0');
-    script.setAttribute('data-input-position',  'top');
+    script.setAttribute('data-input-position',  'bottom');
     script.setAttribute('data-theme',           isDark ? 'dark' : 'light');
-    script.setAttribute('data-lang',            'es');
+    script.setAttribute('data-lang',            'en');
     script.setAttribute('crossorigin',          'anonymous');
     script.async = true;
     container.appendChild(script);
@@ -762,6 +851,65 @@ document.addEventListener('DOMContentLoaded', () => {
   const btn = document.getElementById('darkToggle');
   if (btn) btn.textContent = document.documentElement.classList.contains('dark') ? '☀️' : '🌙';
 });
+
+
+// ── REACTIONS ──
+function react(btn) {
+  const slug = new URLSearchParams(window.location.search).get('slug');
+  const key = 'reaction-' + slug;
+  const prev = localStorage.getItem(key);
+  const emoji = btn.dataset.reaction;
+
+  document.querySelectorAll('.reaction-btn').forEach(b => {
+    b.classList.remove('selected', 'pop');
+  });
+
+  if (prev === emoji) {
+    // Toggle off
+    localStorage.removeItem(key);
+  } else {
+    localStorage.setItem(key, emoji);
+    btn.classList.add('selected', 'pop');
+    btn.addEventListener('animationend', () => btn.classList.remove('pop'), { once: true });
+  }
+}
+
+function loadReaction() {
+  const slug = new URLSearchParams(window.location.search).get('slug');
+  const saved = localStorage.getItem('reaction-' + slug);
+  if (!saved) return;
+  const btn = document.querySelector(`.reaction-btn[data-reaction="${saved}"]`);
+  if (btn) btn.classList.add('selected');
+}
+
+// ── COPY LINK ──
+function copyLink() {
+  const btn = document.getElementById('copyBtn');
+  navigator.clipboard.writeText(window.location.href).then(() => {
+    btn.textContent = '✓ ¡Copiado!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.innerHTML = '🔗 Copiar link';
+      btn.classList.remove('copied');
+    }, 2000);
+  }).catch(() => {
+    // Fallback for older browsers
+    const ta = document.createElement('textarea');
+    ta.value = window.location.href;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    btn.textContent = '✓ ¡Copiado!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.innerHTML = '🔗 Copiar link';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+
+setTimeout(loadReaction, 150);
 
 </script>
 </body>
