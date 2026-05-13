@@ -575,6 +575,25 @@ window.addEventListener('scroll', () => {
 }, { passive: true });
 
 render();
+
+// ── DARK MODE ──
+(function() {
+  if (localStorage.getItem('estatica-theme') === 'dark')
+    document.documentElement.classList.add('dark');
+})();
+
+function toggleDark() {
+  const isDark = document.documentElement.classList.toggle('dark');
+  localStorage.setItem('estatica-theme', isDark ? 'dark' : 'light');
+  const btn = document.getElementById('darkToggle');
+  if (btn) btn.textContent = isDark ? '☀️' : '🌙';
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const btn = document.getElementById('darkToggle');
+  if (btn) btn.textContent = document.documentElement.classList.contains('dark') ? '☀️' : '🌙';
+});
+
 </script>
 </body>
 </html>
