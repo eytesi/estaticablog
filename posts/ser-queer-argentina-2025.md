@@ -1,6 +1,6 @@
 ---
 title: "Ser queer en Argentina en 2025: avances, retrocesos y lo que nadie dice"
-date: 2025-04-28
+date: 2026-04-28
 category: lgbtq
 tags:
   - lgbtq+

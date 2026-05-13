@@ -1,6 +1,6 @@
 ---
 title: Los algoritmos y lo que eligen no mostrarte
-date: 2025-04-15
+date: 2026-04-15
 category: actualidad
 tags:
   - medios

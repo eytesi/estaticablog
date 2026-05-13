@@ -1,6 +1,6 @@
 ---
 title: Una nota personal sobre mudarse y lo que dejás atrás
-date: 2025-04-05
+date: 2026-04-05
 category: personal
 tags:
   - personal

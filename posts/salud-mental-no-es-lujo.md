@@ -1,6 +1,6 @@
 ---
 title: La salud mental no es un lujo, es un derecho
-date: 2025-05-10
+date: 2026-05-10
 category: salud
 tags:
   - terapia

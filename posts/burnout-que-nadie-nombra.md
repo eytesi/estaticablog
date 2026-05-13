@@ -1,6 +1,6 @@
 ---
 title: Trabajar para vivir, o el burnout que nadie quiere nombrar
-date: 2025-05-03
+date: 2026-05-03
 category: trabajo
 tags:
   - trabajo
